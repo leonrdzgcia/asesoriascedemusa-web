@@ -30,7 +30,7 @@ import { VgOverlayPlayModule } from '@videogular/ngx-videogular/overlay-play';
 import { VgBufferingModule } from '@videogular/ngx-videogular/buffering';*/
 
 import { ProgressSpinnerMode, MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [],
@@ -57,6 +57,7 @@ import { MatPaginator } from '@angular/material/paginator';
     MatListModule,
     MatRadioModule,
     MatSelectModule,
+    MatPaginatorModule,
     /*VgCoreModule,
     VgControlsModule,
     VgOverlayPlayModule,
@@ -85,6 +86,7 @@ import { MatPaginator } from '@angular/material/paginator';
     MatListModule,
     MatRadioModule,
     MatSelectModule,
+    MatPaginatorModule,
     /*VgCoreModule,
     VgControlsModule,
     VgOverlayPlayModule,

@@ -1,0 +1,47 @@
+<h1 mat-dialog-title>Modificar Pregunta</h1>
+<div mat-dialog-content>
+  <form [formGroup]="formularioEdicion" class="dialog-form">
+
+    <div class="form-row">
+      <mat-form-field class="half-width">
+        <mat-label>ID Pregunta</mat-label>
+        <input matInput formControlName="idPregunta">
+      </mat-form-field>
+
+      <mat-form-field class="half-width">
+        <mat-label>ID Examen</mat-label>
+        <input matInput formControlName="idExamen" (keypress)="soloNumeros($event)">
+      </mat-form-field>
+    </div>
+
+    <mat-form-field class="full-width">
+      <mat-label>Pregunta</mat-label>
+      <textarea matInput formControlName="pregunta" rows="4" class="textarea-field"></textarea>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Respuesta 1</mat-label>
+      <textarea matInput formControlName="respuesta_1" rows="3" class="textarea-field"></textarea>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Respuesta 2</mat-label>
+      <textarea matInput formControlName="respuesta_2" rows="3" class="textarea-field"></textarea>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Respuesta 3</mat-label>
+      <textarea matInput formControlName="respuesta_3" rows="3" class="textarea-field"></textarea>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Correcta (1, 2 o 3)</mat-label>
+      <input matInput formControlName="correcta" (keypress)="soloNumeros($event)">
+    </mat-form-field>
+
+  </form>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="onCancelClick()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="onSaveClick()" [disabled]="!formularioEdicion.valid">Guardar</button>
+</div>

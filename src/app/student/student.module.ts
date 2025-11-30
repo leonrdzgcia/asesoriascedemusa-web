@@ -19,6 +19,7 @@ import { DialogContentmComponent } from './dialog-contentm/dialog-contentm.compo
 import { MessageDialogComponent } from './examenescuatro/message-dialog/message-dialog.component';
 import { AsignacionesComponent } from './asignaciones/asignaciones.component';
 import { DialogDeleteComponent } from './preguntas/dialog-delete/dialog-delete.component';
+import { DialogEditComponent } from './preguntas/dialog-edit/dialog-edit.component';
 
 
 
@@ -42,7 +43,8 @@ import { DialogDeleteComponent } from './preguntas/dialog-delete/dialog-delete.c
     DialogContentComponent,
     DialogContentmComponent,
     MessageDialogComponent,
-    DialogDeleteComponent
+    DialogDeleteComponent,
+    DialogEditComponent
   ],
   imports: [
     CommonModule,
