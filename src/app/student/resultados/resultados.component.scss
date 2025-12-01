@@ -1,5 +1,36 @@
+table {
+  width: 100%;
+  margin-top: 0;
+}
+
 .table-container {
-    max-height: 650px; /* Ajusta la altura máxima según tus necesidades */
-    overflow: scroll;
-  }
-  
+  max-height: 650px; /* Ajusta la altura máxima según tus necesidades */
+  overflow: scroll;
+}
+
+.example-button-row {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.filter-select {
+  width: 300px;
+  max-width: 100%;
+  margin-right: auto;
+}
+
+.header-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: white;
+  padding-bottom: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.table-wrapper {
+  margin-top: 10px;
+  overflow-x: auto;
+}

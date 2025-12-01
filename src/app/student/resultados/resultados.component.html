@@ -1,18 +1,33 @@
 <div class="container" style="width: 160%; max-width: 1500px;">
-    <mat-toolbar><span>Resultados</span></mat-toolbar>
+    <div class="header-sticky">
+        <mat-toolbar><span>Resultados</span></mat-toolbar>
 
-    <div class="example-button-row">
-        <button (click)="clickDescarga()" type="submit" mat-raised-button color="primary">Descargar Excel </button>
-        <button (click)="clickCsv()" type="submit" mat-raised-button color="primary">Descargar CSV</button>
+        <div class="example-button-row">
+            <mat-form-field appearance="outline" class="filter-select">
+                <mat-label>Filtrar por Examen</mat-label>
+                <mat-select [(value)]="examenSeleccionado" (selectionChange)="filtrarPorExamen()">
+                    <mat-option [value]="null">Todos los exámenes</mat-option>
+                    <mat-option *ngFor="let examen of listaExamenes" [value]="examen.idExamen">
+                        ID: {{ examen.idExamen }} - {{ examen.nombreExamen || examen.nombre || 'Examen' }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <button (click)="clickDescarga()" type="submit" mat-raised-button color="primary">
+                <mat-icon>download</mat-icon>
+                Descargar Excel
+            </button>
+        </div>
     </div>
 
-    <table mat-table [dataSource]="dataResultados" class="mat-elevation-z8">
+    <div class="table-wrapper">
+        <table mat-table [dataSource]="dataResultados" class="mat-elevation-z8">
         <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
             <th mat-header-cell *matHeaderCellDef>{{ column | titlecase }}</th>
             <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
+        </table>
+    </div>
 
 </div>
