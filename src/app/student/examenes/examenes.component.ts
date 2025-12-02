@@ -14,7 +14,6 @@ import { environment } from 'src/environments/environment';
 import { UploadResponse } from 'aws-s3-upload-ash/dist/types';
 import AWSS3UploadAshClient from 'aws-s3-upload-ash';
 
-
 @Component({
   selector: 'app-examenes',
   templateUrl: './examenes.component.html',
@@ -94,33 +93,23 @@ export class ExamenesComponent {
   }
 
   async handleSendFile() {
-    console.log(environment)
-    console.log("handleSendFile")
-    console.log(this.fileSelected);
-
     if (this.fileSelected == null) {
       this.ventana('No se hay archivo seleccionado para guardar', 'ERROR');
-      
     }else{
       await this.S3CustomClient
       .uploadFile(this.fileSelected, this.fileSelected.type, undefined, this.fileSelected.name, "public-read")
       .then((data: UploadResponse) => console.log(data))
       .catch((err: any) => console.error(err))
-
     }
-    
   }
 
-
-
   clickAgregarExamen() {
-    //console.log(this.newData);
     if (this.formularioExamen.value.idExamen == '0') {
       this.formularioExamen.value.nivel = this.nivelSeleccionado;
       this.agregarExamen();
     } else {
       this.ventana('Para agregar un Examen indique el valor 0', 'ERROR');
-    }//this.agregarExamen();
+    }
   }
 
   agregarExamen(): void {
@@ -175,67 +164,19 @@ export class ExamenesComponent {
       console.log('-----excel null ');
       this.ventana('No hay excel cargado', 'ERROR');
     } else {
-      
-      console.log(this.ExcelData[1].numero);
-
-      console.log(this.ExcelData[0].numero);     
-      console.log(this.ExcelData[0].encabezado);//idexamen
-      console.log(this.ExcelData[0].pregunta);           
-      console.log(this.ExcelData[0].preguntaImagen);           
-      console.log(this.ExcelData[0].respuesta1);//numeropreguntas
-      console.log(this.ExcelData[0].respuesta2);//
-      console.log(this.ExcelData[0].respuesta3);//
-      console.log(this.ExcelData[0].correcta);//     
-      console.log(this.ExcelData[1].numero);     
-      console.log(this.ExcelData[1].encabezado);//idexamen
-      console.log(this.ExcelData[1].pregunta);
-      console.log(this.ExcelData[1].preguntaImagen);           
-      console.log(this.ExcelData[1].respuesta1);
-      console.log(this.ExcelData[1].respuesta2);//
-      console.log(this.ExcelData[1].respuesta3);//
-      console.log(this.ExcelData[1].correcta);//
-
-      /*console.log(this.invertirCadena(this.ExcelData[1].respuesta1));      console.log(this.invertirCadena(this.ExcelData[2].respuesta1));console.log(this.invertirCadena(this.ExcelData[2].respuesta1).substring(0,4));*/
-      /*const caracteresArray = this.ExcelData[2].respuesta1.split('');
-      const caracteresInvertidos = caracteresArray.reverse();
-      const cadenaInvertida = caracteresInvertidos.join('');
-      if (cadenaInvertida.substring(0,4) == 'gpj.') {
-        console.log('ES RESPUESTA IMAGEN ');
-      }*/
-      /*if (this.invertirCadena(this.ExcelData[2].respuesta1).substring(0,4) == 'gpj.') {
-        console.log('ES RESPUESTA IMAGEN ');
-      }*/
-      
-      
       if (this.ExcelData[0].numero != '') {
         //this.api.getExamenIdExamen(this.ExcelData[0].numero).subscribe(
         this.api.getExamenIdExamen(this.ExcelData[0].encabezado).subscribe(
           (data) => {
             console.log(data);
             if (data == null) {
-
               console.log('-- NO EXISTE EL EXAMEN ' + this.ExcelData[0].encabezado);
               this.ventana('No existe el examen ' + this.ExcelData[0].encabezado, 'ERROR');
             } else {
-
-              console.log('-----excel con informacion ');
-              console.log(this.loading);
               this.fechaActual = new Date();
-
               console.log(this.ExcelData.length);
               for (let i = 1; i < this.ExcelData.length; i++) {
-
-                console.log(this.ExcelData[i].numero);
-                console.log(this.ExcelData[i].encabezado);
-                console.log(this.ExcelData[i].pregunta);
-                console.log(this.ExcelData[i].preguntaImagen);
-                console.log(this.ExcelData[i].respuesta1);
-                console.log(this.ExcelData[i].respuesta2);
-                console.log(this.ExcelData[i].respuesta3);
-
-
                 this.dataPregunta.idExamen = this.ExcelData[0].encabezado;
-
                 var str = this.ExcelData[i]+'';
                 const caracteresArray = this.ExcelData[i].respuesta1.toString().split('');
                 const caracteresInvertidos = caracteresArray.reverse();
@@ -253,26 +194,18 @@ export class ExamenesComponent {
                   this.dataPregunta.respuesta_2 = this.ExcelData[i].respuesta2;
                   this.dataPregunta.respuesta_3 = this.ExcelData[i].respuesta3;
                   this.dataPregunta.tipoRespuestas = '1';//respuestas letras
-                }          
-                console.log(this.ExcelData[i].pregunta);                
+                }
+                console.log(this.ExcelData[i].pregunta);
                 this.dataPregunta.id     = this.ExcelData[i].numero;
                 this.dataPregunta.encabezado     = this.ExcelData[i].encabezado;
                 this.dataPregunta.pregunta       = this.ExcelData[i].pregunta;
-
-
                 if (this.ExcelData[i].preguntaImagen == 'NA') {
-                  this.dataPregunta.preguntaImagen = this.ExcelData[i].preguntaImagen;                                
+                  this.dataPregunta.preguntaImagen = this.ExcelData[i].preguntaImagen;
                 }else{
                   console.log(this.ExcelData[i].numero);
-                  this.dataPregunta.preguntaImagen = this.srcDef + this.ExcelData[i].preguntaImagen;                
-
+                  this.dataPregunta.preguntaImagen = this.srcDef + this.ExcelData[i].preguntaImagen;
                 }
-//                this.dataPregunta.preguntaImagen = this.srcDef + this.ExcelData[i].preguntaImagen;                
-
-
-
                 this.dataPregunta.correcta       = this.ExcelData[i].correcta;
-                
                 this.agregarPregunta();
               }
               console.log(this.dataService.examenasignado);
@@ -301,7 +234,6 @@ export class ExamenesComponent {
           console.log('-- NO EXISTE EL examen');
           this.ventana('Examen no valido', 'ERROR');
         } else {
-
           this.formularioExamen.value.idExamen = data.idExamen;
           this.formularioExamen.value.nombreExamen = data.nombreExamen;
           this.formularioExamen.value.idMateria = data.idMateria;
@@ -309,8 +241,6 @@ export class ExamenesComponent {
           this.formularioExamen.value.tipo = data.tipo;
           this.formularioExamen.value.tiempo = data.tiempo;
           this.formularioExamen.value.preguntas90 = this.ExcelData[0].respuesta1;
-
-
           this.agregarExamen();
         }
       },
@@ -334,7 +264,6 @@ export class ExamenesComponent {
       //this.bandera = !this.bandera; // Cambiar la condición al hacer clic, por ejemplo
       this.eliminarExamen();
     }
-
   }
 
   eliminarExamen() {
@@ -371,13 +300,11 @@ export class ExamenesComponent {
             if (this.formularioExamen.value.idMateria == '') {
               this.formularioExamen.value.idMateria = data.idMateria;
             }
-
             if (this.nivelSeleccionado == '') {
               this.formularioExamen.value.nivel = data.nivel;
             } else {
               this.formularioExamen.value.nivel = this.nivelSeleccionado;
             }
-
             if (this.formularioExamen.value.tiempo == '') {
               this.formularioExamen.value.tiempo = data.tiempo;
             }
@@ -441,8 +368,5 @@ export class ExamenesComponent {
     // Une los caracteres invertidos en una nueva cadena
     const cadenaInvertida = caracteresInvertidos.join('');
     return cadenaInvertida;
-}
-
-
-
+  }
 }

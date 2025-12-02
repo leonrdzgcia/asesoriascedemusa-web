@@ -1,39 +1,30 @@
 <div class="container" style="width: 160%; max-width: 1500px;">
-    <mat-toolbar><span>Examenes</span></mat-toolbar>
+    <mat-toolbar><span>Examenes cat</span></mat-toolbar>
 
     <input type="file" style="font-size: small" (change)="leerExcel($event)">
-    <input type="file" style="font-size: small" (change)="onChangeFile($event)">
-
-    <!--button (click)="handleSendFile()" >Send file</button-->
 
     <mat-spinner *ngIf="loading" class="spinner" diameter="50"></mat-spinner>
 
     <form *ngIf="!loading" class="column-form" [formGroup]="formularioExamen" (ngSubmit)="submitForm()">
-        <!--div *ngIf="mostrarSpinner">
-            <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
-          </div-->
+
         <mat-form-field class="flex-auto">
             <mat-label for="idExamen">ID Examen</mat-label>
             <input matInput type="text" formControlName="idExamen" (keypress)="soloNumeros($event)">
         </mat-form-field>
-
         <mat-form-field class="flex-auto">
             <mat-label for="nombreExamen">Examen</mat-label>
             <input matInput type="text" formControlName="nombreExamen">
         </mat-form-field>
-
         <mat-form-field class="flex-auto">
             <mat-label for="materia">idMateria</mat-label>
             <input matInput type="text" formControlName="idMateria">
         </mat-form-field>
-
         <mat-form-field>
             <mat-label>Nivel</mat-label>
             <mat-select [(value)]="nivelSeleccionado">
                 <mat-option *ngFor="let opcion of opciones" [value]="opcion">{{ opcion }}</mat-option>
             </mat-select>
         </mat-form-field>
-
         <mat-form-field class="flex-auto">
             <mat-label for="tiempo">tiempo</mat-label>
             <input matInput type="text" formControlName="tiempo">
@@ -50,11 +41,6 @@
     </div>
 
     <table mat-table [dataSource]="dataSourceExamenes" class="mat-elevation-z8">
-        
-        <!--ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
-            <th mat-header-cell *matHeaderCellDef>{{ column | titlecase }}</th>
-            <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
-        </ng-container-->
 
         <ng-container matColumnDef="idExamen">
             <th mat-header-cell *matHeaderCellDef style="width: 5%;">Id Examen</th>
@@ -94,5 +80,4 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-
 </div>
