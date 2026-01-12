@@ -105,6 +105,7 @@ export class AsignacionesComponent {
 
   selectUsuario() {
     this.banderaUsuario = true;
+    this.buscarAsignacion();
   }
 
   obtenerExamenes() {
