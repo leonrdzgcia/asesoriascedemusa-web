@@ -20,31 +20,35 @@ import { MessageDialogComponent } from './examenescuatro/message-dialog/message-
 import { AsignacionesComponent } from './asignaciones/asignaciones.component';
 import { DialogDeleteComponent } from './preguntas/dialog-delete/dialog-delete.component';
 import { DialogEditComponent } from './preguntas/dialog-edit/dialog-edit.component';
+import { ArchivosComponent } from './archivos/archivos.component';
+import { CatalogovideosComponent } from './catalogovideos/catalogovideos.component';
 
 
 
 @NgModule({
   declarations: [
     AsignacionesComponent,
-    ResultadosComponent,    
-    
+    ResultadosComponent,
+
     UsuariosComponent,
     PreguntasComponent,
     ExamenesComponent,
     ExamenestresComponent,
     ExamenvideoComponent,
     ExamenvideodosComponent,
-    ExamentresComponent,    
+    ExamentresComponent,
     ExamenvideotresComponent,
     ExamenvideocuatroComponent,
-    
+
     ResultadosComponent,
     ExamenescuatroComponent,
     DialogContentComponent,
     DialogContentmComponent,
     MessageDialogComponent,
     DialogDeleteComponent,
-    DialogEditComponent
+    DialogEditComponent,
+    ArchivosComponent,
+    CatalogovideosComponent
   ],
   imports: [
     CommonModule,

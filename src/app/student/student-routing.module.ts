@@ -11,14 +11,18 @@ import { ExamenvideodosComponent } from './examenvideodos/examenvideodos.compone
 import { ExamenvideotresComponent } from './examenvideotres/examenvideotres.component';
 import { ExamenvideocuatroComponent } from './examenvideocuatro/examenvideocuatro.component';
 import { ResultadosComponent } from './resultados/resultados.component';
+import { ArchivosComponent } from './archivos/archivos.component';
+import { CatalogovideosComponent } from './catalogovideos/catalogovideos.component';
 
 
 const routes: Routes = [
-  { path: 'asignaciones', component: AsignacionesComponent },  
+  { path: 'asignaciones', component: AsignacionesComponent },
   { path: 'resultados', component: ResultadosComponent },
   { path: 'usuarios', component: UsuariosComponent },
   { path: 'examenes', component: ExamenesComponent },
   { path: 'preguntas', component: PreguntasComponent },
+  { path: 'archivos', component: ArchivosComponent },
+  { path: 'catalogovideos', component: CatalogovideosComponent },
   { path: 'examentres', component: ExamenestresComponent },
   { path: 'examencuatro', component: ExamenescuatroComponent },
 

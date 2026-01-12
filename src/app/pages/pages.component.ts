@@ -34,7 +34,7 @@ export class PagesComponent {
   video = 'Seleccione'
 
   arrayExamenes: string[] = [];
-  arrayExamenesInt: Examenint[] = []; 
+  arrayExamenesInt: Examenint[] = [];
   examenSeleccionado: any;
 
   arrayVideos: Array<[number, string]> = [
@@ -45,7 +45,6 @@ export class PagesComponent {
     [5, "dos"],
     [6, "uno"],
     [7, "dos"],
-    
   ];
 
   optionsVideos = [
@@ -75,11 +74,11 @@ export class PagesComponent {
 
   constructor(
     private observer: BreakpointObserver,
-    private cd: ChangeDetectorRef, 
-    private dataService: DataService, 
-    private api: ExamenService, 
-    private _snackBar: MatSnackBar, 
-    private router: Router, 
+    private cd: ChangeDetectorRef,
+    private dataService: DataService,
+    private api: ExamenService,
+    private _snackBar: MatSnackBar,
+    private router: Router,
     private menuServices: MenuService
   ) {
 
@@ -110,7 +109,6 @@ export class PagesComponent {
     console.log(this.bandera); console.log(this.dataService);*/
     this.bandera = this.dataService.banderaUsuario;
     console.log(this.bandera);
-    
   }
 
   botonActualizar(){
@@ -136,7 +134,6 @@ export class PagesComponent {
     console.log(this.dataService.idExamenSeleccionado);
     this.router.navigateByUrl('/dashboard/student/examencuatro');
     //console.log(this.arrayExamenesInt);
-    
   }
 
   verVideo(){
@@ -165,10 +162,7 @@ export class PagesComponent {
   cargarMenu() {
     console.log('----//  NavbarComponent CARGARMENU --');
     this.menuServices.getMenu().subscribe(data => {
-      //console.log(data);      
       this.menu = data;
-      //console.log(this.menu);      
-
     })
 
   }
@@ -179,8 +173,6 @@ export class PagesComponent {
         this.dataSource = data;
         console.log(data);
         this.examenmenu = data;
-        //console.log(this.examenmenu);      
-
       },
       (error) => {
         console.error('Error fetching data list:', error);
@@ -189,20 +181,16 @@ export class PagesComponent {
   }
 
   obtenerasignacionesporMatreicula() {
-    console.log(this.arrayExamenesInt);    
-      
+    //console.log(this.arrayExamenesInt);
     this.api.getAsignacionesMatricula(this.dataService.matricula).subscribe(
       (data) => {
         this.arrayExamenes = data;
         console.log(data);
         for (let index = 0; index < data.length; index++) {
-                    
           this.arrayExamenesInt.push( { idExamen : data[index].idExamen, nombreExamen : data[index].nombreExamen });
         }
         this.examenmenu = data;
-        console.log(this.arrayExamenesInt);      
-
-
+        console.log(this.arrayExamenesInt);
       },
       (error) => {
         console.error('Error fetching data list:', error);
@@ -214,11 +202,7 @@ export class PagesComponent {
     this.api.getExamens().subscribe(
       (data) => {
         //this.arrayExamenes = data;
-
-        console.log(data);
-        console.log(data.length);
         for (let index = 0; index < data.length; index++) {
-          console.log(data[index].idMateria);
           this.arrayExamenes.push   ( data[index].idExamen + ' - '+ data[index].idMateria );
           //this.arrayExamenesInt.push( { idExamen : data[index].idExamen, nombreExamen : data[index].nombreExamen });
         }

@@ -17,16 +17,27 @@ export class ExamenService {
   constructor( private http: HttpClient ) { }
 
   // --------------------------------------------API ftp
-  cargarArchivos(formData: FormData): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/archivos`, formData);
+  cargarArchivos(file: File, src: string | number): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('src', src.toString());
+    return this.http.post(`${this.apiUrl}upload`, formData, { responseType: 'text' });
   }
   // --------------------------------------------API Archivos
   getArchivos(src?: number): Observable<any> {
+    console.log('-- getArchivos');
+    console.log(this.apiUrl);
     if (src !== undefined) {
       return this.http.get<any>(`${this.apiUrl}/archivos?src=${src}`);
     }
     return this.http.get<any>(`${this.apiUrl}/archivos`);
   }
+
+  // --------------------------------------------API Videos
+  agregarVideo(videoData: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/videos`, videoData);
+  }
+
   // --------------------------------------------API CATALOGO VIDEOS
   getCatalogos(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/catalogos`);
@@ -145,7 +156,8 @@ export class ExamenService {
 
   agregarPregunta(newData: any): Observable<any> {
     console.log (newData)
-    return this.http.post<any>(`${this.apiUrl}/pregunta`, newData);
+    console.log (this.apiUrl)
+    return this.http.post<any>(`${this.apiUrl}pregunta`, newData);
   }
 
   eliminarPregunta(id: number): Observable<any> {
