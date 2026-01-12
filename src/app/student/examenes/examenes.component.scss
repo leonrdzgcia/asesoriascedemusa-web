@@ -1,13 +1,13 @@
 table {
   width: 100%;
-  margin-top: 100px;
+  margin-top: 0;
 }
 
 th {
   width: 20%;
 }
 
-ponter {
+pointer {
   cursor: pointer;
 }
 
@@ -33,15 +33,32 @@ ponter {
 .column-form {
   display: flex;
   flex-direction: row;
-  align-items: flex-start; /* Otra opción: align-items: center; para centrar verticalmente */
+  align-items: flex-start;
+  gap: 10px;
 }
 
 .example-button-row {
   display: flex;
-justify-content: space-evenly;    
+  justify-content: space-evenly;
+  gap: 10px;
 }
 
 .table-container {
-  max-height: 650px; /* Ajusta la altura máxima según tus necesidades */
-  overflow: scroll;
+  max-height: 650px;
+  overflow: auto;
+  margin-top: 10px;
+}
+
+.header-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: white;
+  padding-bottom: 10px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.table-wrapper {
+  margin-top: 10px;
+  overflow-x: auto;
 }

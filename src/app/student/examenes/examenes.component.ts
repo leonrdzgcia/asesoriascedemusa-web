@@ -26,9 +26,12 @@ export class ExamenesComponent {
   loading = false;
   fechaActual: Date | undefined;
   nivelSeleccionado: string = '';
-  displayedColumns: string[] = ['idExamen', 'tipo', 'nombreExamen', 'idMateria', 'nivel', 'tiempo', 'preguntas90'];
+  displayedColumns: string[] = ['idExamen', 'tipo', 'nombreExamen', 'idMateria', 'nivel', 'tiempo', 'preguntas90', 'acciones'];
   opciones: string[] = ['Preparatoria', 'Facultad', 'Secundaria'];
   banderaNoventaPreguntas: boolean = false; //true : 7000pts / false 100%
+  mostrarFormularioCrear: boolean = false;
+  mostrarFormularioEditar: boolean = false;
+  examenEnEdicion: any = null;
   dataPregunta: Pregunta = {
     //idPregunta:0,
     idExamen: 0,
@@ -100,6 +103,23 @@ export class ExamenesComponent {
       .uploadFile(this.fileSelected, this.fileSelected.type, undefined, this.fileSelected.name, "public-read")
       .then((data: UploadResponse) => console.log(data))
       .catch((err: any) => console.error(err))
+    }
+  }
+
+  toggleFormularioCrear() {
+    this.mostrarFormularioCrear = !this.mostrarFormularioCrear;
+    if (this.mostrarFormularioCrear) {
+      // Limpiar formulario al abrir
+      this.formularioExamen.reset({
+        idExamen: '0',
+        tipo: 'Examen',
+        nombreExamen: '',
+        idMateria: '',
+        tiempo: '',
+        nivel: '',
+        preguntas90: ''
+      });
+      this.nivelSeleccionado = '';
     }
   }
 
@@ -249,6 +269,79 @@ export class ExamenesComponent {
       }
     );
 
+  }
+
+  editarExamenTabla(examen: any) {
+    console.log('Editar examen:', examen);
+    this.examenEnEdicion = { ...examen };
+    this.mostrarFormularioCrear = false;
+    this.mostrarFormularioEditar = true;
+    this.formularioExamen.patchValue({
+      idExamen: examen.idExamen,
+      tipo: examen.tipo,
+      nombreExamen: examen.nombreExamen,
+      idMateria: examen.idMateria,
+      tiempo: examen.tiempo,
+      nivel: examen.nivel,
+      preguntas90: examen.preguntas90
+    });
+    this.nivelSeleccionado = examen.nivel;
+    // Scroll al formulario
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  cancelarEdicion() {
+    this.mostrarFormularioEditar = false;
+    this.examenEnEdicion = null;
+    this.formularioExamen.reset({
+      idExamen: '',
+      tipo: 'Examen',
+      nombreExamen: '',
+      idMateria: '',
+      tiempo: '',
+      nivel: '',
+      preguntas90: ''
+    });
+    this.nivelSeleccionado = '';
+  }
+
+  guardarEdicion() {
+    if (!this.formularioExamen.valid) {
+      this.ventana('Por favor complete todos los campos requeridos', 'ERROR');
+      return;
+    }
+
+    this.formularioExamen.value.nivel = this.nivelSeleccionado;
+    console.log('Guardando edición:', this.formularioExamen.value);
+
+    this.api.agregarExamen(this.formularioExamen.value).subscribe(
+      (response) => {
+        console.log('Examen actualizado exitosamente:', response);
+        this.ventana('Examen actualizado correctamente', 'OK');
+        this.llenadoListaExamenes();
+        this.cancelarEdicion();
+      },
+      (error) => {
+        console.error('Error al actualizar examen:', error);
+        this.ventana('Error al actualizar el examen', 'ERROR');
+      }
+    );
+  }
+
+  eliminarExamenTabla(idExamen: number) {
+    if (confirm('¿Está seguro de que desea eliminar este examen?')) {
+      this.api.eliminarExamen(idExamen).subscribe(
+        (da) => {
+          console.log(da);
+          this.ventana('Examen eliminado correctamente', 'OK');
+          this.llenadoListaExamenes();
+        },
+        error => {
+          console.error('Error al eliminar datos:', error);
+          this.ventana('Error al eliminar el examen', 'ERROR');
+        }
+      );
+    }
   }
 
   clickEliminarExamen() {
