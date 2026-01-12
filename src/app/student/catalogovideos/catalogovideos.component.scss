@@ -1,0 +1,330 @@
+.container {
+  padding: 20px;
+  max-width: 1600px;
+  margin: 0 auto;
+
+  h1 {
+    color: #3f51b5;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: 500;
+  }
+
+  h2 {
+    color: #3f51b5;
+    margin-bottom: 15px;
+    font-size: 18px;
+    font-weight: 500;
+  }
+}
+
+.form-card {
+  margin-bottom: 20px;
+
+  mat-card-header {
+    margin-bottom: 20px;
+
+    mat-card-title {
+      font-size: 20px;
+      color: #3f51b5;
+    }
+  }
+
+  mat-card-content {
+    padding: 20px;
+  }
+}
+
+// Ajustar el margen del formulario cuando está dentro de la columna
+.left-column .form-card {
+  margin-bottom: 20px;
+}
+
+.form-row {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+
+  .full-width {
+    width: 100%;
+  }
+}
+
+.button-row {
+  display: flex;
+  gap: 15px;
+  justify-content: flex-start;
+  margin-top: 20px;
+
+  button {
+    min-width: 120px;
+
+    mat-icon {
+      margin-right: 8px;
+    }
+  }
+}
+
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+
+  table {
+    width: 100%;
+
+    th {
+      background-color: #3f51b5;
+      color: white;
+      font-weight: 600;
+      padding: 15px;
+    }
+
+    td {
+      padding: 12px 15px;
+    }
+
+    tr:hover {
+      background-color: #f5f5f5;
+    }
+
+    .mat-column-id {
+      max-width: 80px;
+    }
+
+    .mat-column-acciones {
+      max-width: 150px;
+      text-align: center;
+    }
+  }
+
+  mat-paginator {
+    margin-top: 20px;
+  }
+
+  .no-data {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+    font-size: 16px;
+  }
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px;
+}
+
+// Layout de dos columnas
+.two-column-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-top: 20px;
+
+  .left-column,
+  .right-column {
+    min-width: 0;
+  }
+}
+
+// Sección de carga de videos
+.upload-card {
+  margin-bottom: 20px;
+
+  mat-card-header {
+    margin-bottom: 15px;
+
+    mat-card-title {
+      font-size: 18px;
+      color: #3f51b5;
+    }
+  }
+}
+
+.upload-section {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  .button-row-upload {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+
+  .btn-select-file,
+  .btn-upload {
+    mat-icon {
+      margin-right: 8px;
+    }
+  }
+
+  .files-info {
+    background-color: #f5f5f5;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #3f51b5;
+
+    .file-count {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      font-weight: 600;
+      color: #3f51b5;
+
+      mat-icon {
+        color: #3f51b5;
+      }
+    }
+
+    .file-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 200px;
+      overflow-y: auto;
+
+      .file-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px;
+        background-color: white;
+        border-radius: 4px;
+
+        mat-icon {
+          color: #666;
+          font-size: 20px;
+        }
+
+        .file-name {
+          flex: 1;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .file-size {
+          color: #666;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
+
+// Sección de filtro de videos
+.video-filter-section {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+
+  .categoria-select {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .btn-cargar-video {
+    height: 56px;
+    min-width: 160px;
+
+    mat-icon {
+      margin-right: 8px;
+    }
+
+    &:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+  }
+}
+
+// Contenedor con scroll infinito para videos
+.videos-scroll-container {
+  max-height: 600px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+
+  .videos-table {
+    width: 100%;
+
+    th {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background-color: #3f51b5;
+      color: white;
+    }
+  }
+}
+
+.loading-more {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  gap: 10px;
+
+  span {
+    color: #666;
+    font-size: 14px;
+  }
+}
+
+.end-message {
+  text-align: center;
+  padding: 20px;
+  color: #999;
+  font-size: 14px;
+  font-style: italic;
+}
+
+// Responsive
+@media (max-width: 1200px) {
+  .two-column-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .form-row {
+    flex-direction: column;
+  }
+
+  .button-row {
+    flex-direction: column;
+
+    button {
+      width: 100%;
+    }
+  }
+
+  .button-row-upload {
+    flex-direction: column;
+
+    button {
+      width: 100%;
+    }
+  }
+
+  .video-filter-section {
+    flex-direction: column;
+
+    .categoria-select {
+      width: 100%;
+    }
+
+    .btn-cargar-video {
+      width: 100%;
+    }
+  }
+}
