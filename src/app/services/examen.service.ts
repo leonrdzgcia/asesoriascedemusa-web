@@ -17,10 +17,29 @@ export class ExamenService {
   constructor( private http: HttpClient ) { }
 
   // --------------------------------------------API ftp
-  //cargarArchivos(formData : FormData): Observable<any>{
-    //return this.http.post<FormData>(`${this.apiUrl}/upload`, formData);
-    //return this.http.post<FormData>(`${this.apiUrl}/upload`, formData);
-  //}
+  cargarArchivos(formData: FormData): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/archivos`, formData);
+  }
+  // --------------------------------------------API Archivos
+  getArchivos(src?: number): Observable<any> {
+    if (src !== undefined) {
+      return this.http.get<any>(`${this.apiUrl}/archivos?src=${src}`);
+    }
+    return this.http.get<any>(`${this.apiUrl}/archivos`);
+  }
+  // --------------------------------------------API CATALOGO VIDEOS
+  getCatalogos(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/catalogos`);
+  }
+  agregarCatalogo(newData: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/catalogos`, newData);
+  }
+  actualizarCatalogo(id: number, data: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/catalogos/${id}`, data);
+  }
+  eliminarCatalogo(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/catalogos/${id}`);
+  }
 
   // --------------------------------------------API ASIGNACIONES
   getAsignaciones(): Observable<any> {
@@ -86,7 +105,7 @@ export class ExamenService {
     return this.http.post<any>(`${this.apiUrl}/examen`, newData);
   }
 
-  
+
   eliminarExamen(id: number): Observable<any> {
     const url = `${this.apiUrl}/examen/${id}`;
     return this.http.delete(url);
@@ -107,10 +126,7 @@ export class ExamenService {
     //return this.http.get<Menu[]>('./assets/data/menu.json');
     //return this.http.get<any>(`${this.apiUrl}/resultado`);
     return this.http.get<any>(`${this.apiUrl}/resultado` ,{ observe: 'body' })
-
   }
-
-
 
   //API PREGUNTAS
   getPreguntas(): Observable<any> {
@@ -126,7 +142,7 @@ export class ExamenService {
     //return this.http.get<Menu[]>('./assets/data/menu.json');
     return this.http.get<any>(`${this.apiUrl}/pregunta/idExamen?idExamen=${idExamen}`);
   }
- 
+
   agregarPregunta(newData: any): Observable<any> {
     console.log (newData)
     return this.http.post<any>(`${this.apiUrl}/pregunta`, newData);
@@ -134,7 +150,6 @@ export class ExamenService {
 
   eliminarPregunta(id: number): Observable<any> {
     const url = `${this.apiUrl}/pregunta/${id}`;
-    return this.http.delete(url);    
+    return this.http.delete(url);
   }
-
 }
