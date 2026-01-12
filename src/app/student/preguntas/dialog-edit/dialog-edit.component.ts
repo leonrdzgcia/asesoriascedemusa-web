@@ -17,12 +17,15 @@ export class DialogEditComponent {
   ) {
     this.formularioEdicion = new FormGroup({
       idPregunta: new FormControl({ value: data.idPregunta, disabled: true }),
-      idExamen: new FormControl(data.idExamen, Validators.required),
+      idExamen: new FormControl({ value: data.idExamen, disabled: true }, Validators.required),
+      encabezado: new FormControl(data.encabezado || '', Validators.required),
       pregunta: new FormControl(data.pregunta, Validators.required),
+      preguntaImagen: new FormControl({ value: data.preguntaImagen || 'NA', disabled: true }),
       respuesta_1: new FormControl(data.respuesta_1, Validators.required),
       respuesta_2: new FormControl(data.respuesta_2, Validators.required),
       respuesta_3: new FormControl(data.respuesta_3, Validators.required),
-      correcta: new FormControl(data.correcta, Validators.required)
+      correcta: new FormControl(data.correcta, Validators.required),
+      tipoRespuestas: new FormControl({ value: data.tipoRespuestas || '1', disabled: true }, Validators.required)
     });
   }
 
@@ -34,7 +37,10 @@ export class DialogEditComponent {
     if (this.formularioEdicion.valid) {
       const datosActualizados = {
         ...this.formularioEdicion.value,
-        idPregunta: this.data.idPregunta
+        idPregunta: this.data.idPregunta,
+        idExamen: this.formularioEdicion.get('idExamen')?.value,
+        preguntaImagen: this.formularioEdicion.get('preguntaImagen')?.value,
+        tipoRespuestas: this.formularioEdicion.get('tipoRespuestas')?.value
       };
       this.dialogRef.close(datosActualizados);
     }

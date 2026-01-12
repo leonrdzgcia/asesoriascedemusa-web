@@ -15,8 +15,18 @@
     </div>
 
     <mat-form-field class="full-width">
+      <mat-label>Encabezado</mat-label>
+      <input matInput formControlName="encabezado">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
       <mat-label>Pregunta</mat-label>
       <textarea matInput formControlName="pregunta" rows="4" class="textarea-field"></textarea>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>URL Imagen Pregunta (opcional)</mat-label>
+      <input matInput formControlName="preguntaImagen" placeholder="NA si no tiene imagen">
     </mat-form-field>
 
     <mat-form-field class="full-width">
@@ -37,6 +47,14 @@
     <mat-form-field class="full-width">
       <mat-label>Correcta (1, 2 o 3)</mat-label>
       <input matInput formControlName="correcta" (keypress)="soloNumeros($event)">
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Tipo de Respuestas</mat-label>
+      <mat-select formControlName="tipoRespuestas">
+        <mat-option value="1">Texto</mat-option>
+        <mat-option value="2">Imagen</mat-option>
+      </mat-select>
     </mat-form-field>
 
   </form>

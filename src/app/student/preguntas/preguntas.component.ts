@@ -144,167 +144,9 @@ export class PreguntasComponent implements OnInit, AfterViewInit {
     }
   }
 
-  // MÉTODO COMENTADO - Funcionalidad antigua
-  // buscarporidExamen() {
-  //   var valor = '';
-  //   var valor2 = 0;//console.log(this.newData)
 
-  //   console.log(this.dataPregunta)
-  //   console.log(this.dataPregunta)
-  //   console.log(this.formularioPreguntas);
-  //   if (this.dataPregunta.idPregunta == null) {
-  //     console.log('idpregunta vacia ');
-  //     valor = this.dataPregunta.idExamen.toString();
-  //   } if (this.dataPregunta.idExamen == null) {
-  //     console.log(' idexamenvacia ');//valor2 = this.dataPregunta.idPregunta;
-  //   }//const =
-  //   console.log(valor)
-  //   //console.log(this.listaUsuarios);
 
-  //   this.api.getPreguntasIdExamen(valor).subscribe(
-  //     (data) => {
-  //       this.dataPreguntas = data;
-  //       console.log(data);
-  //     },
-  //     (error) => {
-  //       console.error('Error fetching data list:', error);
-  //     }
-  //   );
-  // }
 
-  // MÉTODO COMENTADO - Funcionalidad antigua (ahora se usa el modal de edición)
-  // clickAgregarPregunta() {
-  //   console.log('-- agregarActualzar ');
-  //   console.log(this.dataPregunta);
-  //   console.log(this.formularioPreguntas.value);
-  //   if (this.formularioPreguntas.value.idPregunta == '0') {
-  //     this.agregarPregunta();
-  //     this.ventana('Pregunta agregada correctamente', 'OK');
-
-  //   } else {
-  //     this.ventana('Para agregar una pregunta indique el valor 0', 'ERROR');
-  //   }
-  //   //this.agregarActualzar2();
-  // }
-
-  // MÉTODO COMENTADO - Funcionalidad antigua (ahora se usa el modal de edición)
-  // agregarPregunta() {
-  //   console.log('--- agregarActualzar2 ');
-  //   console.log(this.dataPregunta);
-  //   console.log(this.formularioPreguntas.value);
-  //   this.api.agregarPregunta(this.formularioPreguntas.value).subscribe(
-  //     (response) => {
-  //       console.log('Datos aagregados exitosamente :', response);
-  //       // Actualiza la tabla después de agregar nuevos datos
-  //       this.llenadoListaPreguntas();
-  //     },
-  //     (error) => {
-  //       console.error('Error adding data:', error);
-  //     }
-  //   );
-  // }
-
-  // MÉTODO COMENTADO - Funcionalidad antigua (ahora se usa el modal de edición)
-  // clickModiicarPregunta() {
-  //   console.log(this.formularioPreguntas.value);
-  //   if (this.formularioPreguntas.value.idPregunta == '0') {
-  //     console.log('ID ES 0');
-  //     this.ventana('No se puede modificar una pregunta con id sea 0', 'ERROR');
-  //   } else {
-  //     this.api.getPreguntasId(Number(this.formularioPreguntas.value.idPregunta)).subscribe(
-  //       (data) => {
-  //         this.dataPreguntas = data;
-  //         console.log(data);
-  //         if (data == null) {
-  //           console.log('-- NO EXISTE EL USUARIO');
-  //           this.ventana('Usuario no valido', 'ERROR');
-  //         } else {
-  //           console.log(this.formularioPreguntas.value);
-  //           if (this.formularioPreguntas.value.idExamen == '') {
-  //             this.formularioPreguntas.value.idExamen = data.idExamen;
-  //           }
-  //           if (this.formularioPreguntas.value.pregunta == '') {
-  //             this.formularioPreguntas.value.pregunta = data.pregunta;
-  //           }
-  //           if (this.formularioPreguntas.value.respuesta_1 == '') {
-  //             this.formularioPreguntas.value.respuesta_1 = data.respuesta_1;
-  //           }
-  //           if (this.formularioPreguntas.value.respuesta_2 == '') {
-  //             this.formularioPreguntas.value.respuesta_2 = data.respuesta_2;
-  //           }
-  //           if (this.formularioPreguntas.value.respuesta_3 == '') {
-  //             this.formularioPreguntas.value.respuesta_3 = data.respuesta_3;
-  //           }
-  //           if (this.formularioPreguntas.value.correcta == '') {
-  //             this.formularioPreguntas.value.correcta = data.correcta;
-  //           }
-  //           //this.formularioPreguntas.value. = data.fechaAlta;
-  //           //this.formularioPreguntas.value.fechaAlta = data.fechaAlta;
-  //           //this.formularioPreguntas.value.fechaAlta = data.fechaAlta;
-  //           console.log(this.formularioPreguntas.value);
-  //           this.agregarPregunta();
-  //           this.ventana('Usuario actualizada exitosamente ', 'OK');
-  //         }
-  //       },
-  //       (error) => {
-  //         console.error('Error fetching data list:', error);
-  //       }
-  //     );
-  //   }
-  // }
-
-  // MÉTODO COMENTADO - Funcionalidad antigua (ahora se usa el botón de eliminar en la tabla)
-  // clickEliminarPregunta() {
-  //   console.log(this.formularioPreguntas.value);
-  //   if (this.formularioPreguntas.value.idPregunta == '' || this.formularioPreguntas.value.idPregunta == '0') {
-  //     console.log('CAMPO VACIO NOSE PUEDE ELIMINAR ');
-  //     this.ventana('Agregar EL ID DE LA PREGUNTA A ELIMINAR', 'ERROR');
-  //     /*this._snackBar.open('Agregar la Matricula del usuarior', 'ERROR', {
-  //       duration: 3000,        horizontalPosition: 'center',        verticalPosition: 'bottom'      })*/
-  //   } else {
-  //     console.log('CAMPO CON INFO ');
-  //     console.log(this.formularioPreguntas.value);
-  //     //this.obtenerPreguntaId();
-  //     this.eliminarPregunta();
-  //   }
-  // }
-
-  // MÉTODO COMENTADO - Funcionalidad antigua (ahora se usa eliminarPreguntaTabla)
-  // eliminarPregunta() {
-  //   this.api.eliminarPregunta(Number(this.formularioPreguntas.value.idPregunta)).subscribe(
-  //     () => {
-  //       console.log('Datos eliminados exitosamente');
-  //       // Puedes realizar otras acciones después de la eliminación
-  //       this.ventana('PRegunta eliminada correctamente', 'OK');
-  //       this.llenadoListaPreguntas();
-  //     },
-  //     error => {
-  //       console.error('Error al eliminar datos:', error);
-  //       this.ventana('Error al eliminar', 'ERROR');
-  //       this.llenadoListaPreguntas();
-  //     }
-  //   );
-  // }
-
-  // MÉTODO COMENTADO - Funcionalidad antigua
-  // clickEliminarTodasPreguntas(){
-  //   console.log(this.formularioPreguntas.value.idExamen);
-  //   const dialogRef = this.dialog.open(DialogDeleteComponent,{
-  //     data: {
-  //       mess: this.formularioPreguntas.value.idExamen,
-  //       mensaje: '¿Está seguro de que desea eliminar todas las preguntas del examen?'
-  //     }
-  //   });
-
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     if (result) {
-  //       console.log('Opcion aceptar');
-  //     } else {
-  //       console.log('Opcion cancelar');
-  //     }
-  //   });
-
-  // }
 
   abrirModalNuevaPregunta() {
     console.log('Abrir modal para nueva pregunta');
@@ -314,11 +156,14 @@ export class PreguntasComponent implements OnInit, AfterViewInit {
       data: {
         idPregunta: 0,
         idExamen: this.examenSeleccionado || 0,
+        encabezado: '',
         pregunta: '',
+        preguntaImagen: 'NA',
         respuesta_1: '',
         respuesta_2: '',
         respuesta_3: '',
-        correcta: ''
+        correcta: '',
+        tipoRespuestas: '1'
       }
     });
 
@@ -340,11 +185,14 @@ export class PreguntasComponent implements OnInit, AfterViewInit {
       data: {
         idPregunta: pregunta.idPregunta,
         idExamen: pregunta.idExamen,
+        encabezado: pregunta.encabezado || '',
         pregunta: pregunta.pregunta,
+        preguntaImagen: pregunta.preguntaImagen || 'NA',
         respuesta_1: pregunta.respuesta_1,
         respuesta_2: pregunta.respuesta_2,
         respuesta_3: pregunta.respuesta_3,
-        correcta: pregunta.correcta
+        correcta: pregunta.correcta,
+        tipoRespuestas: pregunta.tipoRespuestas || '1'
       }
     });
 
