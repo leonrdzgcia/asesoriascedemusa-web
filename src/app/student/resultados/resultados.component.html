@@ -1,33 +1,55 @@
-<div class="container" style="width: 160%; max-width: 1500px;">
-    <div class="header-sticky">
-        <mat-toolbar><span>Resultados</span></mat-toolbar>
-
-        <div class="example-button-row">
-            <mat-form-field appearance="outline" class="filter-select">
-                <mat-label>Filtrar por Examen</mat-label>
-                <mat-select [(value)]="examenSeleccionado" (selectionChange)="filtrarPorExamen()">
-                    <mat-option [value]="null">Todos los exámenes</mat-option>
-                    <mat-option *ngFor="let examen of listaExamenes" [value]="examen.idExamen">
-                        ID: {{ examen.idExamen }} - {{ examen.nombreExamen || examen.nombre || 'Examen' }}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-            <button (click)="clickDescarga()" type="submit" mat-raised-button color="primary">
-                <mat-icon>download</mat-icon>
-                Descargar Excel
-            </button>
-        </div>
+<div class="results-container">
+  <!-- Header -->
+  <div class="results-header">
+    <div class="header-info">
+      <mat-icon class="header-icon">assessment</mat-icon>
+      <div class="header-text">
+        <h1 class="header-title">Resultados</h1>
+        <p class="header-subtitle">Consulta y exporta los resultados de examenes</p>
+      </div>
     </div>
+  </div>
 
-    <div class="table-wrapper">
-        <table mat-table [dataSource]="dataResultados" class="mat-elevation-z8">
-        <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+  <!-- Filtros y acciones -->
+  <mat-card class="filters-card">
+    <mat-card-content class="filters-content">
+      <mat-form-field appearance="outline" class="filter-select">
+        <mat-label>Filtrar por Examen</mat-label>
+        <mat-icon matPrefix>filter_list</mat-icon>
+        <mat-select [(value)]="examenSeleccionado" (selectionChange)="filtrarPorExamen()">
+          <mat-option [value]="null">Todos los examenes</mat-option>
+          <mat-option *ngFor="let examen of listaExamenes" [value]="examen.idExamen">
+            ID: {{ examen.idExamen }} - {{ examen.nombreExamen || examen.nombre || 'Examen' }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <button (click)="clickDescarga()" mat-raised-button color="primary" class="download-button">
+        <mat-icon>download</mat-icon>
+        Descargar Excel
+      </button>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Tabla de resultados -->
+  <mat-card class="table-card">
+    <mat-card-content>
+      <div class="table-wrapper">
+        <table mat-table [dataSource]="dataResultados" class="results-table">
+          <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
             <th mat-header-cell *matHeaderCellDef>{{ column | titlecase }}</th>
             <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
-        </ng-container>
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
-    </div>
 
+        <!-- Mensaje cuando no hay datos -->
+        <div *ngIf="dataResultados.length === 0" class="no-data">
+          <mat-icon>search_off</mat-icon>
+          <p>No se encontraron resultados</p>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
 </div>
