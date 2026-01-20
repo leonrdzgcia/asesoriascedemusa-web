@@ -1,168 +1,168 @@
-<div class="body">
+<div class="dashboard-container">
+  <!-- Toolbar superior -->
+  <mat-toolbar class="main-toolbar">
+    <button mat-icon-button *ngIf="sidenav.mode === 'over'" (click)="sidenav.toggle()">
+      <mat-icon *ngIf="!sidenav.opened">menu</mat-icon>
+      <mat-icon *ngIf="sidenav.opened">close</mat-icon>
+    </button>
+    <mat-icon class="toolbar-icon">dashboard</mat-icon>
+    <span class="toolbar-title">Panel de Administracion</span>
+    <span class="toolbar-spacer"></span>
+    <span class="user-info">{{ nombreLogin }}</span>
+  </mat-toolbar>
 
-    <mat-toolbar>
-        <button mat-icon-button *ngIf="sidenav.mode === 'over'" (click)="sidenav.toggle()">
-            <mat-icon *ngIf="!sidenav.opened">menu</mat-icon>
-            <mat-icon *ngIf="sidenav.opened">close</mat-icon>
+  <mat-sidenav-container class="sidenav-container">
+    <!-- Sidebar -->
+    <mat-sidenav class="sidebar" #sidenav="matSidenav" mode="side" opened>
+      <!-- Perfil de usuario -->
+      <div class="user-profile">
+        <img class="avatar" src="./assets/img/cedemusa.jpeg" alt="Logo">
+        <h4 class="user-name">{{ nombreLogin }}</h4>
+        <p class="user-id">{{ matriculaLogin }}</p>
+      </div>
+
+      <mat-divider class="sidebar-divider"></mat-divider>
+
+      <!-- Menu Admin -->
+      <div *ngIf="bandera==1" class="menu-section">
+        <p class="menu-label">Administracion</p>
+
+        <button mat-button class="menu-button" (click)="botonActualizar()">
+          <mat-icon>refresh</mat-icon>
+          <span>Actualizar</span>
         </button>
-        <span>Administrador</span>
-        <!--span>{{ rolAcceso }}</span-->
-    </mat-toolbar>
 
-    <mat-sidenav-container class="example-container">
+        <button mat-button class="menu-button" [routerLink]="['student/resultados']">
+          <mat-icon>assessment</mat-icon>
+          <span>Resultados</span>
+        </button>
 
-        <mat-sidenav class="mat-elevation-z8" #sidenav="matSidenav" mode="side" opened>
-            <img class="avatar mat-elevation-z8" src="./assets/img/cedemusa.jpeg" alt="">
-            <h4 class="name">{{ nombreLogin }}</h4>
-            <!--p class="designation">Ing. En computación</p-->
-            <p class="designation">{{ matriculaLogin }}</p>
+        <button mat-button class="menu-button" [routerLink]="['student/asignaciones']">
+          <mat-icon>assignment</mat-icon>
+          <span>Asig. Examenes</span>
+        </button>
 
-            <!-- ----  DIVISION DIVIDER ---------->
-            <mat-divider *ngIf="bandera==1"></mat-divider>
+        <button mat-button class="menu-button" [routerLink]="['student/catalogovideos']">
+          <mat-icon>video_library</mat-icon>
+          <span>Asig. Videos</span>
+        </button>
 
-            <button mat-button *ngIf="bandera==1" class="menu-button" (click)="botonActualizar()"><mat-icon>home</mat-icon>
-                <span><a>Actualizar</a></span>
-            </button>
+        <button mat-button class="menu-button" [routerLink]="['student/usuarios']">
+          <mat-icon>people</mat-icon>
+          <span>Usuarios</span>
+        </button>
 
-            <mat-divider *ngIf="bandera==1"></mat-divider>
+        <button mat-button class="menu-button" [routerLink]="['student/examenes']">
+          <mat-icon>quiz</mat-icon>
+          <span>Examenes</span>
+        </button>
 
-            <!--button mat-button *ngIf="bandera==1" class="menu-button">
-                    <mat-icon>person</mat-icon>
-                    <span><a [routerLink]="['student/studentCreate']">Crear</a></span>
-                </button-->
+        <button mat-button class="menu-button" [routerLink]="['student/preguntas']">
+          <mat-icon>help_outline</mat-icon>
+          <span>Preguntas</span>
+        </button>
 
-            <button mat-button *ngIf="bandera==1" class="menu-button"><mat-icon>done</mat-icon>
-                <span><a [routerLink]="['student/resultados']">Resultados</a></span>
-            </button>
+        <button mat-button class="menu-button" [routerLink]="['student/archivos']">
+          <mat-icon>folder</mat-icon>
+          <span>Archivos</span>
+        </button>
+      </div>
 
-            <button mat-button *ngIf="bandera==1" class="menu-button"><mat-icon>settings</mat-icon>
-                <span><a [routerLink]="['student/asignaciones']">Asig. Examenes</a></span>
-            </button>
-            <button mat-button *ngIf="bandera==1" class="menu-button"><mat-icon>video_library</mat-icon>
-                <span><a [routerLink]="['student/catalogovideos']">Asig. Videos</a></span>
-            </button>
+      <mat-divider *ngIf="bandera==1" class="sidebar-divider"></mat-divider>
 
-            <button mat-button *ngIf="bandera==1" class="menu-button"><mat-icon>person</mat-icon>
-                <span><a [routerLink]="['student/usuarios']">Usuarios</a></span>
-            </button>
+      <!-- Seccion Examenes Admin -->
+      <div *ngIf="bandera==1" class="menu-section">
+        <p class="menu-label">Examenes</p>
 
-            <button mat-button *ngIf="bandera==1" class="menu-button"><mat-icon>menu</mat-icon>
-                <span><a [routerLink]="['student/examenes']">Examenes</a></span>
-            </button>
+        <mat-form-field appearance="outline" class="sidebar-select">
+          <mat-label>Seleccionar examen</mat-label>
+          <mat-select [(value)]="examenSeleccionado">
+            <mat-option *ngFor="let opcion of arrayExamenesInt" [value]="opcion">
+              {{ opcion.idExamen }} - {{ opcion.nombreExamen }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-            <button mat-button *ngIf="bandera==1" class="menu-button"><mat-icon>dataset</mat-icon>
-                <span><a [routerLink]="['student/preguntas']">Preguntas</a></span>
-            </button>
+        <button mat-raised-button color="primary" class="action-button" (click)="presentarExamen()">
+          <mat-icon>play_arrow</mat-icon>
+          Presentar examen
+        </button>
+      </div>
 
-            <button mat-button *ngIf="bandera==1" class="menu-button"><mat-icon>dataset</mat-icon>
-                <span><a [routerLink]="['student/archivos']">Archivos</a></span>
-            </button>
+      <mat-divider *ngIf="bandera==1" class="sidebar-divider"></mat-divider>
 
+      <!-- Seccion Videos Admin -->
+      <div *ngIf="bandera==1" class="menu-section">
+        <p class="menu-label">Videos</p>
 
+        <mat-form-field appearance="outline" class="sidebar-select">
+          <mat-label>Seleccionar video</mat-label>
+          <mat-select [(value)]="examenSeleccionado">
+            <mat-option *ngFor="let option of optionsVideos" [value]="option.value">
+              {{ option.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-            <!-- ----  DIVISION DIVIDER  examenes y videos ADMIN---------->
-            <mat-divider *ngIf="bandera==1"></mat-divider>
+        <button mat-raised-button color="accent" class="action-button" (click)="verVideo()">
+          <mat-icon>play_circle</mat-icon>
+          Ver video
+        </button>
+      </div>
 
-            <!--mat-select *ngIf="bandera==1">
-                <mat-option *ngFor="let option of optionsExamen" [value]="option.value">
-                    dd {{ option.label }}
-                </mat-option>
-            </mat-select-->
-            <mat-form-field *ngIf="bandera==1" class="flex-auto">
-                <mat-label>Seleccionar examen</mat-label>
-                <mat-select [(value)]="examenSeleccionado">
-                    <mat-option *ngFor="let opcion of arrayExamenesInt" [value]="opcion">
-                        {{ opcion.idExamen }} - {{ opcion.nombreExamen }}</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <!--button mat-button *ngIf="bandera==1" class="menu-button"><mat-icon>check_box</mat-icon>
-                <span><a [routerLink]="['student/preguntas']">Examenes admin </a></span>   </button-->
-            <button mat-button *ngIf="bandera==1" class="menu-button"
-                (click)="presentarExamen()"><mat-icon>check_box</mat-icon>
-                <span><a [routerLink]="['student/preguntas']">Presentar examen</a></span>
-            </button>
+      <!-- Seccion Estudiante -->
+      <div *ngIf="bandera==2" class="menu-section">
+        <p class="menu-label">Examenes</p>
 
-            <mat-divider></mat-divider>
+        <mat-form-field appearance="outline" class="sidebar-select">
+          <mat-label>Seleccionar examen</mat-label>
+          <mat-select [(value)]="examenSeleccionado">
+            <mat-option *ngFor="let opcion of arrayExamenesInt" [value]="opcion">
+              {{ opcion.idExamen }} - {{ opcion.nombreExamen }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-            <!---mat-select *ngIf="bandera==1">
-                <mat-option  *ngFor="let option of optionsVideos" [value]="option.value">EE {{ option.label }}</mat-option>
-            </mat-select-->
+        <button mat-raised-button color="primary" class="action-button" (click)="presentarExamen()">
+          <mat-icon>play_arrow</mat-icon>
+          Presentar examen
+        </button>
+      </div>
 
-            <mat-form-field *ngIf="bandera==1" class="flex-auto">
-                <mat-label>Selecionar video</mat-label>
-                <mat-select [(value)]="examenSeleccionado">
-                    <mat-option *ngFor="let option of optionsVideos" [value]="option.value">{{ option.label
-                        }}</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <button mat-button *ngIf="bandera==1" class="menu-button"
-                (click)="verVideo()"><mat-icon>video_library</mat-icon>
-                <!--span><a [routerLink]="['student/preguntas']">{{video}}</a></span-->
-                <span><a [routerLink]="['student/preguntas']">Ver video</a></span>
-            </button>
+      <mat-divider *ngIf="bandera==2" class="sidebar-divider"></mat-divider>
 
+      <div *ngIf="bandera==2" class="menu-section">
+        <p class="menu-label">Videos</p>
 
-            <!-- ----  SECCION VISIBLE SOLO PARA ESTUDIANTES                                      ------------------->
-            <!--mat-divider></mat-divider-->
+        <mat-form-field appearance="outline" class="sidebar-select">
+          <mat-label>Seleccionar video</mat-label>
+          <mat-select [(value)]="examenSeleccionado">
+            <mat-option *ngFor="let option of optionsVideos" [value]="option.value">
+              {{ option.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
 
-            <!--mat-select *ngIf="bandera==2">
-                <mat-option *ngFor="let option of optionsExamen" [value]="option.value">
-                    dd {{ option.label }}</mat-option>
-            </mat-select>
-            <button mat-button *ngIf="bandera==2" class="menu-button"><mat-icon>check_box</mat-icon>
-                <span><a [routerLink]="['student/preguntas']">Examenes Estudiante </a></span>
-            </button-->
+        <button mat-raised-button color="accent" class="action-button" (click)="verVideo()">
+          <mat-icon>play_circle</mat-icon>
+          Ver video
+        </button>
+      </div>
 
-            <mat-form-field *ngIf="bandera==2" class="flex-auto">
-                <mat-label>Seleccionar examen</mat-label>
-                <mat-select [(value)]="examenSeleccionado">
-                    <mat-option *ngFor="let opcion of arrayExamenesInt" [value]="opcion">
-                        {{ opcion.idExamen }} - {{ opcion.nombreExamen }}</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <button mat-button *ngIf="bandera==2" class="menu-button"
-                (click)="presentarExamen()"><mat-icon>check_box</mat-icon>
-                <span><a [routerLink]="['student/preguntas']">Presentar examen </a></span>
-            </button>
+      <mat-divider class="sidebar-divider"></mat-divider>
 
+      <!-- Boton Salir -->
+      <button mat-button class="menu-button logout-button" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Cerrar sesion</span>
+      </button>
+    </mat-sidenav>
 
-            <mat-divider *ngIf="bandera==2"></mat-divider>
-
-            <mat-form-field *ngIf="bandera==2" class="flex-auto">
-                <mat-label>Selecionar video</mat-label>
-                <mat-select [(value)]="examenSeleccionado">
-                    <mat-option *ngFor="let option of optionsVideos" [value]="option.value">{{ option.label
-                        }}</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <button mat-button *ngIf="bandera==2" class="menu-button"
-                (click)="verVideo()"><mat-icon>video_library</mat-icon>
-                <!--span><a [routerLink]="['student/preguntas']">{{video}}</a></span-->
-                <span><a [routerLink]="['student/preguntas']">Ver video </a></span>
-            </button>
-
-            <!--button class="spaner" mat-button *ngIf="bandera==2" class="menu-button"><span style="font-size: smaller;"><a (click)="click(1)" [routerLink]="['student/examenvideo']">1SumasyRestas</a></span></button-->
-
-            <!--div *ngIf="bandera==2">
-                <button mat-button *ngFor="let item of menu"[routerLink]="item.redirect">{{item.nombre}}</button>
-                <button mat-button *ngFor="let item of examenmenu" [routerLink]="['student/examentres'+item.nivel]">
-                    {{item.estatusexamen}}</button>
-            </div-->
-
-            <!-- ----  DIVISION DIVIDER FINAL---------->
-            <mat-divider></mat-divider>
-
-            <button mat-button class="menu-button" (click)="logout()">
-                <mat-icon>logout</mat-icon>
-                <span>Salir</span>
-            </button>
-
-        </mat-sidenav>
-
-        <mat-sidenav-content>
-            <div class="content mat-elevation-z8">
-                <router-outlet></router-outlet>
-            </div>
-        </mat-sidenav-content>
-    </mat-sidenav-container>
+    <!-- Contenido principal -->
+    <mat-sidenav-content class="main-content">
+      <div class="content-wrapper">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
 </div>
