@@ -234,25 +234,54 @@ export class ExamenescuatroComponent implements OnInit {
 
   /**
    * Actualiza el encabezado de la pregunta actual
-   * Solo muestra encabezado si existe y es diferente al anterior
+   * El campo encabezado puede contener:
+   * - 'NA': No mostrar encabezado
+   * - Un número: Referencia al id de otra pregunta cuyo encabezado se debe mostrar
+   * - Texto: El encabezado directo de la pregunta
    */
   private actualizarEncabezado(indicePregunta: number): void {
     const preguntaActual = this.preguntas[indicePregunta];
+    const valorEncabezado = preguntaActual.encabezado;
 
     // Si el encabezado es 'NA', no mostrar nada
-    if (preguntaActual.encabezado === 'NA') {
+    if (valorEncabezado === 'NA' || !valorEncabezado) {
       this.srcEncabezado = 'NA';
+      this.idNumeroencabezado = 0;
       console.log('Encabezado: NA (no se muestra)');
       return;
     }
 
-    // Si el encabezado es diferente al anterior, actualizarlo
-    if (preguntaActual.id !== this.idNumeroencabezado) {
-      this.srcEncabezado = preguntaActual.encabezado;
-      this.idNumeroencabezado = preguntaActual.id;
-      console.log(`Nuevo encabezado ID ${this.idNumeroencabezado}: ${this.srcEncabezado.substring(0, 50)}...`);
+    // Verificar si el encabezado es un número (referencia a otra pregunta)
+    const idReferencia = Number(valorEncabezado);
+
+    if (!isNaN(idReferencia) && idReferencia > 0) {
+      // El encabezado es un número, buscar la pregunta con ese id
+      const preguntaReferencia = this.preguntas.find(p => p.id === idReferencia);
+
+      if (preguntaReferencia && preguntaReferencia.encabezado && preguntaReferencia.encabezado !== 'NA') {
+        // Si el id de referencia es diferente al actual, actualizar
+        if (idReferencia !== this.idNumeroencabezado) {
+          this.srcEncabezado = preguntaReferencia.encabezado;
+          this.idNumeroencabezado = idReferencia;
+          console.log(`Encabezado referenciado de pregunta ID ${idReferencia}`);
+        } else {
+          console.log(`Encabezado ID ${this.idNumeroencabezado} se mantiene (misma referencia)`);
+        }
+      } else {
+        // No se encontró la pregunta referenciada o no tiene encabezado válido
+        this.srcEncabezado = 'NA';
+        this.idNumeroencabezado = 0;
+        console.log(`Pregunta referenciada ID ${idReferencia} no encontrada o sin encabezado`);
+      }
     } else {
-      console.log(`Encabezado ID ${this.idNumeroencabezado} se mantiene (preguntas relacionadas)`);
+      // El encabezado es texto directo
+      if (preguntaActual.id !== this.idNumeroencabezado) {
+        this.srcEncabezado = valorEncabezado;
+        this.idNumeroencabezado = preguntaActual.id;
+        console.log(`Encabezado directo de pregunta ID ${preguntaActual.id}`);
+      } else {
+        console.log(`Encabezado ID ${this.idNumeroencabezado} se mantiene`);
+      }
     }
   }
 
