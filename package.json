@@ -1,14 +1,16 @@
 {
-  "name": "academia",
+  "name": "cedemusa",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
     "start:development": "ng serve --c=development",
     "start:prod": "ng serve --c=prod",
     "build": "ng build",
-    "build:prod": "ng build",
+    "build:prod": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "deploy": "node deploy-ftp.js",
+    "build:deploy": "npm run build:prod && npm run deploy"
   },
   "private": true,
   "dependencies": {
@@ -41,6 +43,8 @@
     "@types/core-js": "^2.5.8",
     "@types/jasmine": "~4.3.0",
     "@types/json2csv": "^5.0.7",
+    "dotenv": "^17.2.3",
+    "ftp-deploy": "^2.4.7",
     "jasmine-core": "~4.5.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.1.0",

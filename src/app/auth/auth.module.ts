@@ -8,6 +8,7 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatSidenavModule} from '@angular/material/sidenav';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatButtonModule} from '@angular/material/button';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { ReactiveFormsModule } from '@angular/forms';
 
 
@@ -23,6 +24,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatSidenavModule,
     MatDividerModule,
     MatButtonModule,
+    MatProgressSpinnerModule,
     ReactiveFormsModule
   ]
 })

@@ -8,29 +8,19 @@ import { DataService } from 'src/app/services/data.service';
   styleUrls: ['./dialog-content.component.scss']
 })
 export class DialogContentComponent {
-
   respuesta: string = '';
-
-
-  constructor(@Inject(MAT_DIALOG_DATA) public options: any, private dataService: DataService) { 
-
+  constructor(@Inject(MAT_DIALOG_DATA) public options: any, private dataService: DataService) {
   }
-
   contiempo(){
     console.log('---  con tiempo ');
     console.log(this.dataService.tiempoExamen);
     this.dataService.tiempoExamen=1;
     console.log(this.dataService.tiempoExamen);
-
   }
-
-
   sintiempo(){
     console.log('---  sin tiempo ');
     console.log(this.dataService.tiempoExamen);
-    
     this.dataService.tiempoExamen=2;
     console.log(this.dataService.tiempoExamen);
   }
-
 }

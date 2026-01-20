@@ -1,8 +1,13 @@
 <div class="body">
     <div class="login">
-        <!--mat-spinner *ngIf="loading" class="spinner" diameter="50"></mat-spinner-->
+        <!-- Spinner de carga -->
+        <div *ngIf="loading" class="loading-container">
+            <mat-spinner class="spinner" diameter="60" color="primary"></mat-spinner>
+            <p class="loading-text">Validando credenciales...</p>
+        </div>
+
+        <!-- Formulario de login -->
         <form *ngIf="!loading" [formGroup]="formLogin">
-        <!--form *ngIf="!loading"-->
             <img src="./assets/img/cedemusa2.jpeg" width="100%">
             <h1>Login </h1>
             <mat-form-field class="ancho">
@@ -16,14 +21,11 @@
             </mat-form-field>
 
             <div class="example-button-row">
-                <!--button (click)="clickValidar()" class="ancho button" mat-raised-button mat-button color="primary" [disabled]="formLogin.invalid">Validar</button-->
-                <!--button (click)="clickValidar()" class="ancho button" mat-raised-button mat-button color="primary" [disabled]="formLogin.invalid">Validar</button-->
-                <button (click)="limpiar()"    class="ancho button" mat-raised-button mat-button color="primary">Limpiar</button>
+                <button (click)="limpiar()" class="ancho button" mat-raised-button mat-button color="primary">Limpiar</button>
                 <button (click)="datosUsuario()" class="ancho button" mat-raised-button mat-button color="primary" [disabled]="formLogin.invalid">Ingresar</button>
-                <!--button (click)="empezar()" class="ancho button" mat-raised-button mat-button color="primary" [disabled]="examen ==0">Empezar</button-->
             </div>
 
-            <h1 style="font-size: small;">v7.1.26</h1>
+            <h1 style="font-size: small;">v12.1.2026</h1>
         </form>
     </div>
 </div>
