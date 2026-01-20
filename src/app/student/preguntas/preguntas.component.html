@@ -1,39 +1,31 @@
 <div class="container" style="width: 160%; max-width: 1550px;">
     <div class="header-sticky">
         <mat-toolbar> <span>Preguntas</span> </mat-toolbar>
-
-
         <!--form class="column-form" [formGroup]="formularioPreguntas" (ngSubmit)="submitForm()">
         <mat-form-field>
             <mat-label for="idPregunta">ID pregunta</mat-label>
             <input matInput formControlName="idPregunta" (keypress)="soloNumeros($event)">
         </mat-form-field>
-
         <mat-form-field class="flex-auto">
             <mat-label for="idExamen">ID Examen</mat-label>
             <input matInput type="text" formControlName="idExamen" (keypress)="soloNumeros($event)">
         </mat-form-field>
-
         <mat-form-field class="flex-auto">
             <mat-label for="pregunta">Pregunta</mat-label>
             <input matInput type="text" formControlName="pregunta">
         </mat-form-field>
-
         <mat-form-field class="flex-auto">
             <mat-label for="respuesta_1">Respuesta 1</mat-label>
             <input matInput type="text" formControlName="respuesta_1">
         </mat-form-field>
-
         <mat-form-field class="flex-auto">
             <mat-label for="respuesta_2">Respuesta 2</mat-label>
             <input matInput type="text" formControlName="respuesta_2">
         </mat-form-field>
-
         <mat-form-field class="flex-auto">
             <mat-label for="respuesta_3">Respuesta 3</mat-label>
             <input matInput type="text" formControlName="respuesta_3">
         </mat-form-field>
-
         <mat-form-field class="flex-auto">
             <mat-label for="correcta">Correcta</mat-label>
             <input matInput type="text" formControlName="correcta" (keypress)="soloNumeros($event)">
@@ -69,12 +61,18 @@
     </div>
     </div>
 
-    <div class="table-wrapper">
+    <!-- Spinner de carga para filtrado -->
+    <div *ngIf="loadingFiltro" class="loading-container">
+        <mat-spinner diameter="50" color="primary"></mat-spinner>
+        <p class="loading-text">Filtrando preguntas...</p>
+    </div>
+
+    <div class="table-wrapper" *ngIf="!loadingFiltro">
         <table mat-table [dataSource]="dataPreguntas" class="mat-elevation-z8">
 
         <ng-container matColumnDef="idPregunta">
             <th mat-header-cell *matHeaderCellDef style="width: 5%;">ID</th>
-            <td mat-cell *matCellDef="let element" style="width: 5%;">{{ element.idPregunta}}</td>
+            <td mat-cell *matCellDef="let element" style="width: 5%;">{{ element.id}}</td>
         </ng-container>
 
         <ng-container matColumnDef="idExamen">

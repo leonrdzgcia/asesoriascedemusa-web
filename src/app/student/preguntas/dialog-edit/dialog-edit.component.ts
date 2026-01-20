@@ -17,6 +17,7 @@ export class DialogEditComponent {
   ) {
     this.formularioEdicion = new FormGroup({
       idPregunta: new FormControl({ value: data.idPregunta, disabled: true }),
+      id: new FormControl({ value: data.id, disabled: true }),
       idExamen: new FormControl({ value: data.idExamen, disabled: true }, Validators.required),
       encabezado: new FormControl(data.encabezado || '', Validators.required),
       pregunta: new FormControl(data.pregunta, Validators.required),
@@ -38,6 +39,7 @@ export class DialogEditComponent {
       const datosActualizados = {
         ...this.formularioEdicion.value,
         idPregunta: this.data.idPregunta,
+        id: this.formularioEdicion.get('id')?.value,
         idExamen: this.formularioEdicion.get('idExamen')?.value,
         preguntaImagen: this.formularioEdicion.get('preguntaImagen')?.value,
         tipoRespuestas: this.formularioEdicion.get('tipoRespuestas')?.value

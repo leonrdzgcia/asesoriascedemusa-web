@@ -30,6 +30,7 @@ export class PreguntasComponent implements OnInit, AfterViewInit {
   todasLasPreguntas: any[] = [];
   listaExamenes: any[] = [];
   examenSeleccionado: number | null = null;
+  loadingFiltro: boolean = false;
 
   dataPregunta: Pregunta = {
     //idPregunta: 0,
@@ -129,19 +130,29 @@ export class PreguntasComponent implements OnInit, AfterViewInit {
   }
 
   filtrarPorExamen() {
-    if (this.examenSeleccionado === null) {
-      // Mostrar todas las preguntas
-      this.dataPreguntas.data = this.todasLasPreguntas;
-      console.log('Mostrando todas las preguntas');
-    } else {
-      // Filtrar por examen seleccionado
-      const preguntasFiltradas = this.todasLasPreguntas.filter(
-        pregunta => pregunta.idExamen === this.examenSeleccionado
-      );
-      this.dataPreguntas.data = preguntasFiltradas;
-      console.log('Filtrando por examen ID:', this.examenSeleccionado);
-      console.log('Preguntas filtradas:', preguntasFiltradas.length);
-    }
+    // Mostrar spinner
+    this.loadingFiltro = true;
+
+    // Simular delay para mostrar el spinner (opcional, pero mejora UX en filtrados rápidos)
+    setTimeout(() => {
+      if (this.examenSeleccionado === null) {
+        // Mostrar todas las preguntas
+        this.dataPreguntas.data = this.todasLasPreguntas;
+        console.log('Mostrando todas las preguntas');
+      } else {
+        // Filtrar por examen seleccionado
+        const preguntasFiltradas = this.todasLasPreguntas.filter(
+          pregunta => pregunta.idExamen === this.examenSeleccionado
+        );
+        this.dataPreguntas.data = preguntasFiltradas;
+        console.log('Filtrando por examen ID:', this.examenSeleccionado);
+        console.log('Preguntas filtradas:', preguntasFiltradas.length);
+        console.log(this.dataPreguntas.data);
+      }
+
+      // Ocultar spinner después del filtrado
+      this.loadingFiltro = false;
+    }, 300);
   }
 
 
@@ -155,6 +166,7 @@ export class PreguntasComponent implements OnInit, AfterViewInit {
       maxWidth: '95vw',
       data: {
         idPregunta: 0,
+        id: 0,
         idExamen: this.examenSeleccionado || 0,
         encabezado: '',
         pregunta: '',
@@ -184,6 +196,7 @@ export class PreguntasComponent implements OnInit, AfterViewInit {
       maxWidth: '95vw',
       data: {
         idPregunta: pregunta.idPregunta,
+        id: pregunta.id,
         idExamen: pregunta.idExamen,
         encabezado: pregunta.encabezado || '',
         pregunta: pregunta.pregunta,

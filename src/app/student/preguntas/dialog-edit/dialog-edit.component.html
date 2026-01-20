@@ -3,12 +3,17 @@
   <form [formGroup]="formularioEdicion" class="dialog-form">
 
     <div class="form-row">
-      <mat-form-field class="half-width">
+      <mat-form-field class="third-width">
         <mat-label>ID Pregunta</mat-label>
         <input matInput formControlName="idPregunta">
       </mat-form-field>
 
-      <mat-form-field class="half-width">
+      <mat-form-field class="third-width">
+        <mat-label>ID</mat-label>
+        <input matInput formControlName="id">
+      </mat-form-field>
+
+      <mat-form-field class="third-width">
         <mat-label>ID Examen</mat-label>
         <input matInput formControlName="idExamen" (keypress)="soloNumeros($event)">
       </mat-form-field>
