@@ -29,6 +29,8 @@ export class ExamenescuatroComponent implements OnInit {
   totalnumeroPreguntas = 0;
   preguntasCorrectas = 0;
   preguntasIncorrectasnum = 0;
+  // Array para persistir respuestas seleccionadas por el usuario
+  respuestasGuardadas: string[] = [];
   //info del examen
   numeroIdExamen = '';
   nombreExamen = '';
@@ -149,7 +151,7 @@ export class ExamenescuatroComponent implements OnInit {
       //console.log(this.preguntas[0].pregunta);
       //this.arrayPreguntasFinal.push(this.preguntas[0].pregunta);
       //this.arrayPreguntasFinal = this.arrayPreguntasFinal + this.preguntas[0].pregunta + '\n';
-      this.openDialogAndWaitForResponse();
+      //this.openDialogAndWaitForResponse();
       //this.startTimer();
       //this.idNumeroencabezado
 
@@ -180,219 +182,164 @@ export class ExamenescuatroComponent implements OnInit {
     );
   }
 
+  /**
+   * Valida la respuesta seleccionada y la registra en el array de resultados
+   */
+  private procesarRespuesta(): void {
+    // Verificar si esta pregunta ya fue procesada (evitar duplicados al retroceder)
+    const yaExisteResultado = this.arrayPreguntasFinalT.some(r => r.idPregunta === this.banderaPreguntas + 1);
+
+    if (yaExisteResultado) {
+      console.log(`Pregunta ${this.banderaPreguntas + 1} ya procesada, no se duplica`);
+      return;
+    }
+
+    // Preparar lista de respuestas de la pregunta actual
+    this.listaRespuestas.push(this.preguntas[this.banderaPreguntas].respuesta_1);
+    this.listaRespuestas.push(this.preguntas[this.banderaPreguntas].respuesta_2);
+    this.listaRespuestas.push(this.preguntas[this.banderaPreguntas].respuesta_3);
+
+    // Obtener respuesta correcta
+    const indiceRespuestaCorrecta = Number(this.preguntas[this.banderaPreguntas].correcta) - 1;
+    const respuestaCorrecta = this.listaRespuestas[indiceRespuestaCorrecta];
+
+    console.log(`Respuesta seleccionada: "${this.respuestaSeleccionada}"`);
+    console.log(`Respuesta correcta: "${respuestaCorrecta}"`);
+
+    // Validar y registrar resultado
+    const esCorrecta = this.respuestaSeleccionada === respuestaCorrecta;
+
+    this.arrayPreguntasFinalT?.push({
+      idPregunta: this.banderaPreguntas + 1,
+      pregunta: this.preguntas[this.banderaPreguntas].pregunta,
+      tipoRespuesta: this.preguntas[this.banderaPreguntas].tipoRespuestas,
+      correcta: esCorrecta,
+      respuestaCorrecta: respuestaCorrecta,
+      respuestaIncorrecta: esCorrecta ? 'NA' : this.respuestaSeleccionada
+    });
+
+    if (esCorrecta) {
+      console.log('✓ RESPUESTA CORRECTA');
+      this.arrayPreguntasFinal += `- respuesta correcta = ${this.respuestaSeleccionada}\n`;
+      this.preguntasCorrectas++;
+    } else {
+      console.log('✗ RESPUESTA INCORRECTA');
+      this.arrayPreguntasIncorrectas += `${this.banderaPreguntas + 1},`;
+      this.preguntasIncorrectasnum++;
+    }
+
+    // Limpiar lista temporal
+    this.listaRespuestas = [];
+  }
+
+  /**
+   * Actualiza el encabezado de la pregunta actual
+   * Solo muestra encabezado si existe y es diferente al anterior
+   */
+  private actualizarEncabezado(indicePregunta: number): void {
+    const preguntaActual = this.preguntas[indicePregunta];
+
+    // Si el encabezado es 'NA', no mostrar nada
+    if (preguntaActual.encabezado === 'NA') {
+      this.srcEncabezado = 'NA';
+      console.log('Encabezado: NA (no se muestra)');
+      return;
+    }
+
+    // Si el encabezado es diferente al anterior, actualizarlo
+    if (preguntaActual.id !== this.idNumeroencabezado) {
+      this.srcEncabezado = preguntaActual.encabezado;
+      this.idNumeroencabezado = preguntaActual.id;
+      console.log(`Nuevo encabezado ID ${this.idNumeroencabezado}: ${this.srcEncabezado.substring(0, 50)}...`);
+    } else {
+      console.log(`Encabezado ID ${this.idNumeroencabezado} se mantiene (preguntas relacionadas)`);
+    }
+  }
+
+  /**
+   * Carga los datos de la pregunta (imagen y respuestas)
+   */
+  private cargarDatosPregunta(indicePregunta: number): void {
+    const preguntaActual = this.preguntas[indicePregunta];
+
+    this.srcPreguntaImg = preguntaActual.preguntaImagen;
+    this.srcRes1 = preguntaActual.respuesta_1;
+    this.srcRes2 = preguntaActual.respuesta_2;
+    this.srcRes3 = preguntaActual.respuesta_3;
+  }
+
   preguntaAnterior() {
     this.banderNext = false;
     this.banderSend = true;
-    //this.listaRespuestas.indexOf(1)
-    //this.listaRespuestas.splice();
 
-    console.log(this.banderaPreguntas);
+    console.log('Retrocediendo desde pregunta:', this.banderaPreguntas);
     this.banderaPreguntas--;
-    console.log(this.banderaPreguntas);
-   
-    console.log(this.preguntas[0].preguntaImagen);
-    console.log(this.preguntas[this.banderaPreguntas].preguntaImagen);
-    this.srcPreguntaImg = '';
-    this.srcPreguntaImg = this.preguntas[this.banderaPreguntas].preguntaImagen;
-    //this.reset();
+
+    // Restaurar respuesta guardada de la pregunta anterior
+    this.respuestaSeleccionada = this.respuestasGuardadas[this.banderaPreguntas] || '';
+
+    // Actualizar encabezado si es necesario
+    this.actualizarEncabezado(this.banderaPreguntas);
+
+    // Cargar datos de la pregunta
+    this.cargarDatosPregunta(this.banderaPreguntas);
+
     if (this.banderaPreguntas == 0) {
-      console.log('NO HAY PREGUNTAS ANTES ');
+      console.log('Primera pregunta alcanzada');
       this.banderBack = true;
     }
   }
 
   siguientePRegunta() {
-    console.log(this.banderaPreguntas);
-    //this.idNumeroencabezado++;
-    console.log(this.preguntas[this.banderaPreguntas + 1].encabezado);
-    //this.arrayPreguntasFinal.push(this.preguntas[this.banderaPreguntas + 1].pregunta);
-    /*this.arrayPreguntasFinalT?.push({idPregunta: this.banderaPreguntas + 1, pregunta: this.preguntas[this.banderaPreguntas].pregunta, tipoRespuesta: this.preguntas[this.banderaPreguntas].tipoRespuestas,respuestaCorrecta: 'RESPUESTA'});*/
+    // Guardar respuesta actual antes de avanzar
+    this.respuestasGuardadas[this.banderaPreguntas] = this.respuestaSeleccionada;
+
+    console.log('Avanzando desde pregunta:', this.banderaPreguntas);
+
     this.arrayPreguntasFinal = this.arrayPreguntasFinal + ' Pregunta ' + (this.banderaPreguntas + 1).toString() + ' -' + this.preguntas[this.banderaPreguntas].pregunta + '\n';
-    console.log(this.arrayPreguntasFinalT);
-    console.log(this.arrayPreguntasFinal);
-    if (this.preguntas[this.banderaPreguntas + 1].encabezado == 'NA') {
-      this.srcEncabezado = 'NA';
-      console.log('--ENCABEZADO ES NA = ' + this.idNumeroencabezado);
-      console.log(this.idNumeroencabezado);
-    } else {
-      if (this.preguntas[this.banderaPreguntas + 1].encabezado == this.idNumeroencabezado.toString()) {
-        console.log('eencabezado ' + this.preguntas[this.banderaPreguntas + 1].encabezado + ' es igual al anterior  ' + this.idNumeroencabezado);
-      } else {
-        console.log('eencabezado igual a ' + this.preguntas[this.banderaPreguntas + 1].encabezado + ' no es igual al anterior que es ' + this.idNumeroencabezado);
-        this.srcEncabezado = '';
-        this.srcEncabezado = this.preguntas[this.banderaPreguntas + 1].encabezado;
-        this.idNumeroencabezado = this.preguntas[this.banderaPreguntas + 1].id;
-        console.log(this.preguntas[this.banderaPreguntas + 1].id);
-        console.log(this.idNumeroencabezado);
-      }
-    }
-    //reset valor
-    this.srcPreguntaImg = '';//this.srcRes1 = '';
-    console.log(this.srcRes1);//console.log(this.srcRes2);console.log(this.srcRes3);
-    //SETEO IMAGENES 
-    this.srcPreguntaImg = this.preguntas[this.banderaPreguntas + 1].preguntaImagen;
-    this.srcRes1 = this.preguntas[this.banderaPreguntas + 1].respuesta_1;
-    this.srcRes2 = this.preguntas[this.banderaPreguntas + 1].respuesta_2;
-    this.srcRes3 = this.preguntas[this.banderaPreguntas + 1].respuesta_3;
-    console.log(this.preguntas[this.banderaPreguntas + 1].respuesta_1);//    console.log(this.preguntas[this.banderaPreguntas + 1].respuesta_2);    console.log(this.preguntas[this.banderaPreguntas + 1].respuesta_3);    
-    console.log(this.srcPreguntaImg);//console.log(this.srcRes2);//    console.log(this.srcRes2);    console.log(this.srcRes3);
+
     this.banderBack = false;
-    console.log('------  siguientePRegunta');//console.log(this.preguntas[this.banderaPreguntas].correcta);
-    console.log(this.preguntas[this.banderaPreguntas].respuesta_1);//    console.log(this.preguntas[this.banderaPreguntas].respuesta_2);    console.log(this.preguntas[this.banderaPreguntas].respuesta_3);
-    this.listaRespuestas.push(this.preguntas[this.banderaPreguntas].respuesta_1);
-    this.listaRespuestas.push(this.preguntas[this.banderaPreguntas].respuesta_2);
-    this.listaRespuestas.push(this.preguntas[this.banderaPreguntas].respuesta_3);
-    //console.log(this.listaRespuestas);
-    console.log(this.listaRespuestas[0]);//console.log(this.listaRespuestas[1]);console.log(this.listaRespuestas[2]);
-    //console.log(this.listaRespuestas[Number(this.preguntas[this.banderaPreguntas].correcta) - 1]);
-    console.log('-----');
-    console.log(this.respuestaSeleccionada);
-    console.log(this.listaRespuestas[Number(this.preguntas[this.banderaPreguntas].correcta) - 1]);
-    console.log('-----');
 
-    //    this.arrayPreguntasFinal.push(this.preguntas[0].pregunta);
+    // Procesar la respuesta de la pregunta actual
+    this.procesarRespuesta();
 
-    if (this.respuestaSeleccionada == this.listaRespuestas[Number(this.preguntas[this.banderaPreguntas].correcta) - 1]) {
-      console.log(' -- RESPUESTA CORRECTA ');
-      this.arrayPreguntasFinal = this.arrayPreguntasFinal + '- respuesta correcta = ' + this.respuestaSeleccionada + '\n';
-
-      if (this.preguntas[this.banderaPreguntas].tipoRespuestas == '1') {
-        this.arrayPreguntasFinalT?.push({
-          idPregunta: this.banderaPreguntas + 1,
-          pregunta: this.preguntas[this.banderaPreguntas].pregunta,
-          tipoRespuesta: this.preguntas[this.banderaPreguntas].tipoRespuestas,
-          correcta: true,
-          respuestaCorrecta: this.respuestaSeleccionada,
-          respuestaIncorrecta: 'NA'
-        });
-      } else if (this.preguntas[this.banderaPreguntas].tipoRespuestas == '2') {
-        this.arrayPreguntasFinalT?.push({
-          idPregunta: this.banderaPreguntas + 1,
-          pregunta: this.preguntas[this.banderaPreguntas].pregunta,
-          tipoRespuesta: this.preguntas[this.banderaPreguntas].tipoRespuestas,
-          correcta: true,
-          respuestaCorrecta: this.respuestaSeleccionada,
-          respuestaIncorrecta: 'NA'
-        });
-      }
-
-      this.preguntasCorrectas++;
-    } else {
-      console.log(' -- RESPUESTA INCORRECTA ');
-      //this.arrayPreguntasFinal = this.arrayPreguntasFinal + '- respuesta incorrecta = ' + this.respuestaSeleccionada + '\n';
-
-      if (this.preguntas[this.banderaPreguntas].tipoRespuestas == '1') {
-        console.log(' -- tipoRespuestas == 1 ');
-        this.arrayPreguntasFinalT?.push({
-          idPregunta: this.banderaPreguntas + 1,
-          pregunta: this.preguntas[this.banderaPreguntas].pregunta,
-          tipoRespuesta: this.preguntas[this.banderaPreguntas].tipoRespuestas,
-          correcta: false,
-          respuestaCorrecta: this.listaRespuestas[Number(this.preguntas[this.banderaPreguntas].correcta) - 1],
-          respuestaIncorrecta: this.respuestaSeleccionada
-        });
-      } else if (this.preguntas[this.banderaPreguntas].tipoRespuestas == '2') {
-        console.log(' -- tipoRespuestas == 2 ');
-        this.arrayPreguntasFinalT?.push({
-          idPregunta: this.banderaPreguntas + 1,
-          pregunta: this.preguntas[this.banderaPreguntas].pregunta,
-          tipoRespuesta: this.preguntas[this.banderaPreguntas].tipoRespuestas,
-          correcta: false,
-          respuestaCorrecta: this.listaRespuestas[Number(this.preguntas[this.banderaPreguntas].correcta) - 1],
-          respuestaIncorrecta: this.respuestaSeleccionada
-        });
-      }
-      this.arrayPreguntasIncorrectas = this.arrayPreguntasIncorrectas + (this.banderaPreguntas + 1) + ',';
-      console.log(this.arrayPreguntasIncorrectas);
-      this.preguntasIncorrectasnum++;
-    }
+    // Avanzar a la siguiente pregunta
     this.banderaPreguntas++;
-    //this.totalPreguntas++;
-    //this.reset();
+
+    // Verificar si llegamos a la última pregunta
     if (this.banderaPreguntas == (this.totalnumeroPreguntas - 1)) {
-      console.log('ULTIMA PREGUNTA ');
+      console.log('Última pregunta alcanzada');
       this.banderNext = true;
       this.banderSend = false;
     } else {
-      this.respuestaSeleccionada = '';
-      //this.listaRespuestas = [];
-      //this.listaRespuestas=;
+      // Restaurar respuesta guardada de la siguiente pregunta si existe
+      this.respuestaSeleccionada = this.respuestasGuardadas[this.banderaPreguntas] || '';
       this.banderSend = true;
     }
 
-    this.listaRespuestas = [];
+    // Actualizar encabezado de la siguiente pregunta
+    this.actualizarEncabezado(this.banderaPreguntas);
+
+    // Cargar datos de la siguiente pregunta
+    this.cargarDatosPregunta(this.banderaPreguntas);
   }
 
   enviarUltimaPregunta() {
-    console.log(this.preguntasCorrectas);//console.log(this.preguntasIncorrectas);console.log(this.totalPreguntas);console.log(this.banderaPreguntas);
-    console.log(this.preguntas[this.banderaPreguntas].respuesta_1);//console.log(this.preguntas[this.banderaPreguntas].respuesta_2);console.log(this.preguntas[this.banderaPreguntas].respuesta_3);
-    console.log(this.preguntas[this.banderaPreguntas].correcta);
-    this.listaRespuestas.push(this.preguntas[this.banderaPreguntas].respuesta_1);
-    this.listaRespuestas.push(this.preguntas[this.banderaPreguntas].respuesta_2);
-    this.listaRespuestas.push(this.preguntas[this.banderaPreguntas].respuesta_3);
-    console.log(this.listaRespuestas);
+    // Guardar respuesta de la última pregunta
+    this.respuestasGuardadas[this.banderaPreguntas] = this.respuestaSeleccionada;
+
+    console.log('Enviando última pregunta:', this.banderaPreguntas + 1);
+
+    // Agregar pregunta al resumen
     this.arrayPreguntasFinal = this.arrayPreguntasFinal + ' Pregunta ' + (this.banderaPreguntas + 1).toString() + ' -' + this.preguntas[this.banderaPreguntas].pregunta + '\n';
-    console.log(this.arrayPreguntasFinalT);
-    console.log(this.respuestaSeleccionada);
-    console.log(this.listaRespuestas[Number(this.preguntas[this.banderaPreguntas].correcta)]);
 
-    if (this.respuestaSeleccionada == this.listaRespuestas[Number(this.preguntas[this.banderaPreguntas].correcta) - 1]) {
-      console.log(' -- RESPUESTA CORRECTA ');
-      this.arrayPreguntasFinal = this.arrayPreguntasFinal + '- respuesta correcta = ' + this.respuestaSeleccionada + '\n';
-      this.preguntasCorrectas++;
-      if (this.preguntas[this.banderaPreguntas].tipoRespuestas == '1') {
-        this.arrayPreguntasFinalT?.push({
-          idPregunta: this.banderaPreguntas + 1,
-          pregunta: this.preguntas[this.banderaPreguntas].pregunta,
-          tipoRespuesta: this.preguntas[this.banderaPreguntas].tipoRespuestas,
-          correcta: true,
-          respuestaCorrecta: this.respuestaSeleccionada,
-          respuestaIncorrecta: 'NA'
-        });
-      } else if (this.preguntas[this.banderaPreguntas].tipoRespuestas == '2') {
-        this.arrayPreguntasFinalT?.push({
-          idPregunta: this.banderaPreguntas + 1,
-          pregunta: this.preguntas[this.banderaPreguntas].pregunta,
-          tipoRespuesta: this.preguntas[this.banderaPreguntas].tipoRespuestas,
-          correcta: true,
-          respuestaCorrecta: this.respuestaSeleccionada,
-          respuestaIncorrecta: 'NA'
-        });
-      }
-    } else {
-      console.log(' -- RESPUESTA IN CORRECTA ');
-      this.arrayPreguntasFinal = this.arrayPreguntasFinal + '- respuesta incorrecta = ' + this.respuestaSeleccionada + '\n';
-      this.arrayPreguntasFinal = this.arrayPreguntasFinal + '- respuesta correcta = ' + this.listaRespuestas[Number(this.preguntas[this.banderaPreguntas].correcta) - 1] + '\n';
+    // Procesar respuesta usando el método helper
+    this.procesarRespuesta();
 
-      if (this.preguntas[this.banderaPreguntas].tipoRespuestas == '1') {
-        this.arrayPreguntasFinalT?.push({
-          idPregunta: this.banderaPreguntas + 1,
-          pregunta: this.preguntas[this.banderaPreguntas].pregunta,
-          tipoRespuesta: this.preguntas[this.banderaPreguntas].tipoRespuestas,
-          correcta: false,
-          //respuestaCorrecta: "Respuesta incorrecta : " + this.respuestaSeleccionada + ' / - respuesta correcta = '+ this.listaRespuestas[Number(this.preguntas[this.banderaPreguntas].correcta) - 1]
-          respuestaCorrecta: this.listaRespuestas[Number(this.preguntas[this.banderaPreguntas].correcta) - 1],
-          respuestaIncorrecta: this.respuestaSeleccionada
-        });
-      } else if (this.preguntas[this.banderaPreguntas].tipoRespuestas == '2') {
-        this.arrayPreguntasFinalT?.push({
-          idPregunta: this.banderaPreguntas + 1,
-          pregunta: this.preguntas[this.banderaPreguntas].pregunta,
-          tipoRespuesta: this.preguntas[this.banderaPreguntas].tipoRespuestas,
-          correcta: false,
-          respuestaCorrecta: this.listaRespuestas[Number(this.preguntas[this.banderaPreguntas].correcta) - 1],
-          respuestaIncorrecta: this.respuestaSeleccionada
-        });
-      }
-      this.arrayPreguntasIncorrectas = this.arrayPreguntasIncorrectas + (this.banderaPreguntas + 1) + '.';
-      this.preguntasIncorrectasnum++;
-      console.log(this.arrayPreguntasIncorrectas);
+    console.log('Resultados finales:', this.arrayPreguntasFinalT);
 
-    }
-
-    console.log(this.arrayPreguntasFinalT);
+    // Calificar examen
     this.calificar();
-
   }
 
   calificar() {
@@ -400,8 +347,11 @@ export class ExamenescuatroComponent implements OnInit {
     var resT = 0;
     console.log(this.arrayPreguntasFinalT);
     console.log(this.preguntas[this.banderaPreguntas].pregunta);
-    //console.log(this.preguntas[this.banderaPreguntas + 1].pregunta);
-    //this.arrayPreguntasFinal = this.arrayPreguntasFinal + this.preguntas[this.banderaPreguntas].pregunta;
+
+    // Recalcular correctas e incorrectas desde arrayPreguntasFinalT para evitar duplicados
+    this.preguntasCorrectas = this.arrayPreguntasFinalT.filter(r => r.correcta === true).length;
+    this.preguntasIncorrectasnum = this.arrayPreguntasFinalT.filter(r => r.correcta === false).length;
+
     console.log(' -- preguntasCorrectas   son = ' + this.preguntasCorrectas);
     console.log(' -- preguntasIncorrectas son = ' + this.preguntasIncorrectasnum);
     console.log(this.totalnumeroPreguntas);

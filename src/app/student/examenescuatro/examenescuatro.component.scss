@@ -1,49 +1,304 @@
-.example-radio-group {
-    display: flex;
-    flex-direction: column;
-    margin: 45px 0;
-    align-items: flex-start;
-    font-size: large
-  }
-  
-  .example-radio-button {
-    margin: 5px;
-  }
-
-  .scrollable-content {
-    max-height: 200px; /* Altura máxima del contenedor */
-    overflow-y: auto; /* Añade una barra de desplazamiento cuando sea necesario */
-    color: black;
-    font-size: large;
-    
-    
-  }
-
-  .label-content {
-    color: black;
-    font-size: large;
-  
-  }
-
-  .example-button-row {
-    display: ruby-text;
-    max-width: 300px;
-  }
-
-  .rojo {
-    color: red;
-  }
-
-  .custom-radio-button .mat-radio-label-content {
-    color: black; 
-    font-size: 16px; /* Cambia el tamaño según tus necesidades */
-    /* Cambia a cualquier color que necesites */
-  }
-  
-  
-  mat-divider {
-    margin-top: 16px;
-    margin-bottom: 16px;
-    background-color: white;
+// Contenedor principal
+.exam-container {
+  max-width: 1400px;
+  width: 95%;
+  margin: 0 auto;
+  padding: 40px;
+  background-color: white;
+  min-height: 100vh;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
+// Header
+.exam-header {
+  margin-bottom: 24px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .exam-title {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+  }
+
+  .exam-id {
+    font-size: 14px;
+    opacity: 0.9;
+  }
+
+  .timer-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: rgba(255, 255, 255, 0.25);
+    padding: 12px 20px;
+    border-radius: 30px;
+  }
+
+  .timer-icon {
+    font-size: 28px;
+  }
+
+  .timer-display {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .timer-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    opacity: 0.85;
+  }
+
+  .timer-text {
+    font-size: 24px;
+    font-weight: 700;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 2px;
+    display: flex;
+    gap: 2px;
+  }
+
+  .timer-separator {
+    animation: blink 1s infinite;
+  }
+}
+
+// Card de pregunta
+.question-card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 24px;
+}
+
+.question-header .header-card {
+  background-color: #f8f9fa;
+  border-left: 4px solid #667eea;
+}
+
+.scrollable-content {
+  max-height: 250px;
+  overflow-y: auto;
+  padding: 12px;
+}
+
+.context-line {
+  margin: 8px 0;
+  color: #333;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.question-section {
+  margin: 24px 0;
+}
+
+.question-number {
+  color: #667eea;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.question-text {
+  color: #2d3748;
+  font-size: 18px;
+  line-height: 1.8;
+  font-weight: 500;
+  margin: 0;
+}
+
+.question-image {
+  margin: 24px 0;
+  text-align: center;
+
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.section-divider {
+  margin: 24px 0;
+  background-color: #e2e8f0;
+}
+
+// Respuestas
+.answers-section {
+  margin: 24px 0;
+}
+
+.answers-title {
+  color: #4a5568;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.answers-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  .answer-option {
+    padding: 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: #fff;
+    transition: all 0.3s ease;
+    margin: 0;
+
+    &:hover {
+      border-color: #667eea;
+      background-color: #f7fafc;
+      transform: translateX(4px);
+    }
+
+    &.mat-radio-checked {
+      border-color: #667eea;
+      background-color: #edf2f7;
+    }
+
+    ::ng-deep .mat-radio-label-content {
+      color: #2d3748;
+      font-size: 16px;
+      line-height: 1.6;
+      padding-left: 12px;
+    }
+  }
+}
+
+.answers-group-images {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+
+  .image-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: #fff;
+    transition: all 0.3s ease;
+
+    &:hover {
+      border-color: #667eea;
+      transform: translateY(-4px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    mat-radio-button {
+      margin-bottom: 12px;
+    }
+
+    .answer-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 4px;
+    }
+  }
+}
+
+// Botones
+.navigation-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 32px;
+  padding-bottom: 40px;
+
+  .nav-button {
+    min-width: 140px;
+    height: 48px;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 24px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+
+    &:not([disabled]):hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    &[disabled] {
+      opacity: 0.5;
+    }
+
+    &.submit-button {
+      min-width: 180px;
+      font-weight: 600;
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 768px) {
+  .exam-container {
+    padding: 12px;
+  }
+
+  .exam-header .header-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .timer-info {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .question-text {
+    font-size: 16px;
+  }
+
+  .answers-group-images {
+    grid-template-columns: 1fr;
+  }
+
+  .navigation-buttons {
+    flex-direction: column;
+    align-items: stretch;
+
+    .nav-button {
+      width: 100%;
+    }
+  }
+}
+
+// Animación para el separador del timer
+@keyframes blink {
+  0%, 49% {
+    opacity: 1;
+  }
+  50%, 100% {
+    opacity: 0.3;
+  }
+}

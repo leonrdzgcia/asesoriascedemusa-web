@@ -1,65 +1,130 @@
-<label id="example-radio-group-label" style="font-size: large; color: black;"> Examen de {{nombreExamen}} - id examen {{stringIidExamen}}  </label>
-<label *ngIf="minutesCad.length !=1"  id="example-radio-group-label" style="font-size: large; color: black;"> | Tiempo :   {{minutesCad}}:{{seconds}}</label>
-<label *ngIf="minutesCad.length ==1 " id="example-radio-group-label" style="font-size: large; color: black;"> | Tiempo :  0{{minutesCad}}:{{seconds}}</label>
 
-<mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group"
-    [(ngModel)]="respuestaSeleccionada">
-    <!--label style="font-size: large; color: black;">{{ preguntas[banderaPreguntas].encabezado }}</label-->
-    <div class="scrollable-content" *ngIf="this.srcEncabezado != 'NA'">
-        <mat-card>
-            <mat-card-content  *ngFor="let linea of this.srcEncabezado.split('\n')">{{ linea }}</mat-card-content>
-            <!--div class="scrollable-content" [innerHTML]="salto"></div-->
+  <!-- Header del examen con información -->
+  <mat-card class="exam-header">
+    <mat-card-content class="header-content">
+      <div class="exam-info">
+        <h2 class="exam-title">{{nombreExamen}}</h2>
+        <span class="exam-id">ID: {{stringIidExamen}}</span>
+      </div>
+      <div class="timer-info">
+        <mat-icon class="timer-icon">schedule</mat-icon>
+        <div class="timer-display">
+          <span class="timer-label">Tiempo:</span>
+          <span class="timer-text">
+            <span class="timer-minutes">{{minutesCad.length === 1 ? '0' + minutesCad : minutesCad}}</span>
+            <span class="timer-separator">:</span>
+            <span class="timer-seconds">{{seconds < 10 ? '0' + seconds : seconds}}</span>
+          </span>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Contenedor principal de la pregunta -->
+  <mat-card class="question-card">
+    <mat-card-content>
+      <!-- Encabezado de la pregunta (si existe) -->
+      <div class="question-header" *ngIf="this.srcEncabezado != 'NA'">
+        <mat-card class="header-card">
+          <mat-card-header>
+            <mat-card-title>Contexto</mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="scrollable-content">
+            <p *ngFor="let linea of this.srcEncabezado.split('\n')" class="context-line">
+              {{ linea }}
+            </p>
+          </mat-card-content>
         </mat-card>
-    </div>
+      </div>
 
-    <mat-divider></mat-divider>
+      <mat-divider *ngIf="this.srcEncabezado != 'NA'" class="section-divider"></mat-divider>
 
-    <label class="label-content">{{banderaPreguntas+1}} .-{{ preguntas[banderaPreguntas].pregunta }}</label>
+      <!-- Pregunta actual -->
+      <div class="question-section">
+        <h3 class="question-number">Pregunta {{banderaPreguntas + 1}}</h3>
+        <p class="question-text">{{ preguntas[banderaPreguntas].pregunta }}</p>
+      </div>
 
-    <mat-divider></mat-divider>
+      <!-- Imagen de la pregunta (si existe) -->
+      <div class="question-image" *ngIf="preguntas[banderaPreguntas].preguntaImagen != 'NA'">
+        <img [src]="srcPreguntaImg" alt="Imagen de la pregunta">
+      </div>
 
-    <div *ngIf="preguntas[banderaPreguntas].preguntaImagen != 'NA'">
-        <img [src]="srcPreguntaImg" width="125%">
-    </div>
+      <mat-divider class="section-divider"></mat-divider>
 
-    <!--div *ngIf="preguntas[banderaPreguntas].preguntaImagen != 'NA'"><img src={{srcPregunta}} width="100%"> </div-->
-    <!--mat-radio-button *ngFor="let season of seasons" [value]="season">{{ season }}</mat-radio-button-->
+      <!-- Respuestas tipo texto -->
+      <div class="answers-section" *ngIf="preguntas[banderaPreguntas].tipoRespuestas == '1'">
+        <h4 class="answers-title">Selecciona tu respuesta:</h4>
+        <mat-radio-group [(ngModel)]="respuestaSeleccionada" class="answers-group">
+          <mat-radio-button
+            [value]="preguntas[banderaPreguntas].respuesta_1"
+            class="answer-option">
+            {{ preguntas[banderaPreguntas].respuesta_1 }}
+          </mat-radio-button>
+          <mat-radio-button
+            [value]="preguntas[banderaPreguntas].respuesta_2"
+            class="answer-option">
+            {{ preguntas[banderaPreguntas].respuesta_2 }}
+          </mat-radio-button>
+          <mat-radio-button
+            [value]="preguntas[banderaPreguntas].respuesta_3"
+            class="answer-option">
+            {{ preguntas[banderaPreguntas].respuesta_3 }}
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
 
-    <div  *ngIf="preguntas[banderaPreguntas].tipoRespuestas == '1'">
-        <mat-radio-group [(ngModel)]="respuestaSeleccionada">
+      <!-- Respuestas tipo imagen -->
+      <div class="answers-section" *ngIf="preguntas[banderaPreguntas].tipoRespuestas == '2'">
+        <h4 class="answers-title">Selecciona tu respuesta:</h4>
+        <mat-radio-group [(ngModel)]="respuestaSeleccionada" class="answers-group-images">
+          <div class="image-option">
+            <mat-radio-button [value]="preguntas[banderaPreguntas].respuesta_1"></mat-radio-button>
+            <img [src]="srcRes1" alt="Opción 1" class="answer-image">
+          </div>
+          <div class="image-option">
+            <mat-radio-button [value]="preguntas[banderaPreguntas].respuesta_2"></mat-radio-button>
+            <img [src]="srcRes2" alt="Opción 2" class="answer-image">
+          </div>
+          <div class="image-option">
+            <mat-radio-button [value]="preguntas[banderaPreguntas].respuesta_3"></mat-radio-button>
+            <img [src]="srcRes3" alt="Opción 3" class="answer-image">
+          </div>
+        </mat-radio-group>
+      </div>
+    </mat-card-content>
+  </mat-card>
 
-        <mat-radio-button [value]="preguntas[banderaPreguntas].respuesta_1">{{ preguntas[banderaPreguntas].respuesta_1 }}        </mat-radio-button>        
-        <mat-radio-button [value]="preguntas[banderaPreguntas].respuesta_2">{{ preguntas[banderaPreguntas].respuesta_2 }} </mat-radio-button>
-        <mat-radio-button [value]="preguntas[banderaPreguntas].respuesta_3">{{ preguntas[banderaPreguntas].respuesta_3 }} </mat-radio-button>
-    </mat-radio-group>
-
-    </div>
-
-    <div *ngIf="preguntas[banderaPreguntas].tipoRespuestas == '2'">
-        <mat-radio-group [(ngModel)]="respuestaSeleccionada">
-        <mat-radio-button [value]="preguntas[banderaPreguntas].respuesta_1"></mat-radio-button><img [src]="srcRes1">
-        <mat-radio-button [value]="preguntas[banderaPreguntas].respuesta_2"></mat-radio-button><img src="{{srcRes2}}">
-        <mat-radio-button [value]="preguntas[banderaPreguntas].respuesta_3"></mat-radio-button><img [src]="srcRes3">
-    </mat-radio-group>
-    </div>
-
-</mat-radio-group>
-
-<!--div style="font-size: large; color: black;">Opcion seleccionada : {{respuestaSeleccionada}}</div>
-<div style="font-size: large; color: black;">id pregunta : {{preguntas[banderaPreguntas].id}}</div-->
-
-
-<div class="example-button-row">
-    <button (click)="preguntaAnterior()" class="ancho button" mat-raised-button mat-button color="primary"
-        [disabled]="banderBack">ANTES
+  <!-- Botones de navegación -->
+  <div class="navigation-buttons">
+    <button
+      (click)="preguntaAnterior()"
+      mat-raised-button
+      color="accent"
+      [disabled]="banderBack"
+      class="nav-button">
+      <mat-icon>arrow_back</mat-icon>
+      Anterior
     </button>
-    <button (click)="siguientePRegunta()" class="ancho button" mat-raised-button mat-button color="primary"
-        [disabled]="banderNext">SIGUIENTE
+
+    <button
+      (click)="siguientePRegunta()"
+      mat-raised-button
+      color="primary"
+      [disabled]="banderNext"
+      class="nav-button">
+      Siguiente
+      <mat-icon>arrow_forward</mat-icon>
     </button>
 
-    <!--button (click)="openMessageDialog()" class="ancho button" mat-raised-button mat-button color="primary"
-        [disabled]="banderNext">SIGUIENTE </button-->
-
-    <button (click)="enviarUltimaPregunta()" class="ancho button" mat-raised-button mat-button color="primary"
-        [disabled]="banderSend">ENVIAR
+    <button
+      (click)="enviarUltimaPregunta()"
+      mat-raised-button
+      color="warn"
+      [disabled]="banderSend"
+      class="nav-button submit-button">
+      <mat-icon>send</mat-icon>
+      Enviar Examen
     </button>
+  </div>
+
