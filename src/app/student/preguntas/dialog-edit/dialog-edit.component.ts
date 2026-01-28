@@ -21,7 +21,7 @@ export class DialogEditComponent {
       idExamen: new FormControl({ value: data.idExamen, disabled: true }, Validators.required),
       encabezado: new FormControl(data.encabezado || '', Validators.required),
       pregunta: new FormControl(data.pregunta, Validators.required),
-      preguntaImagen: new FormControl({ value: data.preguntaImagen || 'NA', disabled: true }),
+      preguntaImagen: new FormControl(data.preguntaImagen ),
       respuesta_1: new FormControl(data.respuesta_1, Validators.required),
       respuesta_2: new FormControl(data.respuesta_2, Validators.required),
       respuesta_3: new FormControl(data.respuesta_3, Validators.required),

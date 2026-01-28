@@ -38,6 +38,13 @@ export class ExamenService {
     return this.http.post<any>(`${this.apiUrl}/videos`, videoData);
   }
 
+  // --------------------------------------------API ASIGNACIONES VIDEOS
+  getAsignacionesVideosMatricula(matricula: string): Observable<any> {
+    console.log('getAsignacionesVideosMatricula');
+    console.log(this.apiUrl);
+    return this.http.get(`${this.apiUrl}/asignacionesvideos/matricula?matricula=${matricula}`);
+  }
+
   // --------------------------------------------API CATALOGO VIDEOS
   getCatalogos(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/catalogos`);

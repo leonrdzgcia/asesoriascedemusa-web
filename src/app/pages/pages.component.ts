@@ -36,41 +36,9 @@ export class PagesComponent {
   arrayExamenes: string[] = [];
   arrayExamenesInt: Examenint[] = [];
   examenSeleccionado: any;
+  videoSeleccionado: any;
 
-  arrayVideos: Array<[number, string]> = [
-    [1, "1 Sumas y Restas"],
-    [2, "2 Jerarquia de Operaciones"],
-    [3, "tres"],
-    [4, "uno"],
-    [5, "dos"],
-    [6, "uno"],
-    [7, "dos"],
-  ];
-
-  optionsVideos = [
-    { value: '1', label: '1 Sumas y Restas' },
-    { value: '2', label: '2 Jerarquia de Operaciones' },
-    { value: '3', label: '3 Suma de Polinomios' },
-    { value: '4', label: '4 Multiplicacion de Polinomios' },
-    { value: '5', label: '5 Leyes de los exponentes' },
-    { value: '6', label: '6 Funciones Lineales' },
-    { value: '7', label: '7 Factorizacion de Polinomios' },
-    { value: '8', label: '8 Solución de ecuaciones lineales' },
-    { value: '9', label: '9 Funciones Cuadráticas' },
-    { value: '10', label: '10 Solución de Ecuaciones Cuadraticas' },
-    { value: '11', label: '11 Teorema de Pitagoras' },
-    { value: '12', label: '12 Distancia entre puntos y PM' },
-    { value: '13', label: '13 Teorema de Thales' },
-    { value: '14', label: '14 Razones y proporciones' },
-    { value: '15', label: '15 Rectas Paralelas y Secante' },
-    { value: '16', label: '16 Razones Trigonometricas' },
-    { value: '17', label: '17 Graficas con razones trigonometricas' },
-    { value: '18', label: '18 Ley de los Senos y Cosenos' },
-    { value: '19', label: '19 Frecuencias' },
-    { value: '20', label: '20 Medidas de Posicion' },
-    { value: '21', label: '21 Medidas de Dispersion' },
-    { value: '22', label: '22 Sistema de ecuaciones lineales' }
-  ];
+  optionsVideos: any[] = [];
 
   constructor(
     private observer: BreakpointObserver,
@@ -102,6 +70,7 @@ export class PagesComponent {
     this.obtenerasignaciones();
     this.obtenerasignacionesporMatreicula();
     this.obtenerExamenes();
+    this.obtenerAsignacionesVideos();
     //this.bandera = 1;//administrador
     this.bandera=this.dataService.banderaUsuario;//estudiante
     this.cargarMenu();
@@ -137,8 +106,8 @@ export class PagesComponent {
   }
 
   verVideo(){
-    this.dataService.examenavideo = this.examenSeleccionado;
-    console.log(this.examenSeleccionado);
+    this.dataService.examenavideo = this.videoSeleccionado;
+    console.log(this.videoSeleccionado);
     console.log(this.dataService.examenavideo);
     this.router.navigateByUrl('/dashboard/student/examenvideo');
   }
@@ -194,6 +163,22 @@ export class PagesComponent {
       },
       (error) => {
         console.error('Error fetching data list:', error);
+      }
+    );
+  }
+
+  obtenerAsignacionesVideos() {
+    console.log(' // obtenerAsignacionesVideos');
+    console.log(this.dataService.matricula);
+    this.api.getAsignacionesVideosMatricula(this.dataService.matricula).subscribe(
+      (data) => {
+
+        console.log(data);
+        this.optionsVideos = data;
+        console.log(this.optionsVideos);
+      },
+      (error) => {
+        console.error('Error fetching videos list:', error);
       }
     );
   }

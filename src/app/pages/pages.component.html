@@ -97,16 +97,16 @@
 
         <mat-form-field appearance="outline" class="sidebar-select">
           <mat-label>Seleccionar video</mat-label>
-          <mat-select [(value)]="examenSeleccionado">
-            <mat-option *ngFor="let option of optionsVideos" [value]="option.value">
-              {{ option.label }}
+          <mat-select [(value)]="videoSeleccionado">
+            <mat-option *ngFor="let option of optionsVideos" [value]="option.idVideo">
+              {{ option.nombreVideo }}
             </mat-option>
           </mat-select>
         </mat-form-field>
 
         <button mat-raised-button color="accent" class="action-button" (click)="verVideo()">
           <mat-icon>play_circle</mat-icon>
-          Ver video
+          Ver video Ad
         </button>
       </div>
 
@@ -136,16 +136,16 @@
 
         <mat-form-field appearance="outline" class="sidebar-select">
           <mat-label>Seleccionar video</mat-label>
-          <mat-select [(value)]="examenSeleccionado">
-            <mat-option *ngFor="let option of optionsVideos" [value]="option.value">
-              {{ option.label }}
+          <mat-select [(value)]="videoSeleccionado">
+            <mat-option *ngFor="let option of optionsVideos" [value]="option.idVideo">
+              {{ option.idVideo }} - {{ option.nombreVideo }}
             </mat-option>
           </mat-select>
         </mat-form-field>
 
         <button mat-raised-button color="accent" class="action-button" (click)="verVideo()">
           <mat-icon>play_circle</mat-icon>
-          Ver video
+          Ver video Es
         </button>
       </div>
 
