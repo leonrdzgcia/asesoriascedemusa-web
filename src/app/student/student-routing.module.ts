@@ -4,7 +4,7 @@ import { AsignacionesComponent } from './asignaciones/asignaciones.component';
 import { UsuariosComponent } from './usuarios/usuarios.component';
 import { ExamenesComponent } from './examenes/examenes.component';
 import { PreguntasComponent } from './preguntas/preguntas.component';
-import { ExamenestresComponent } from './examenescuatro/examenestres/examenestres.component';
+
 import { ExamenescuatroComponent } from './examenescuatro/examenescuatro.component';
 import { ExamenvideoComponent } from './examenvideo/examenvideo.component';
 import { ExamenvideodosComponent } from './examenvideodos/examenvideodos.component';
@@ -25,9 +25,10 @@ const routes: Routes = [
   { path: 'preguntas', component: PreguntasComponent },
   { path: 'archivos', component: ArchivosComponent },
   { path: 'videos', component: VideosComponent },
+
+
   { path: 'examencuatro', component: ExamenescuatroComponent },
 
-  { path: 'examentres', component: ExamenestresComponent },
 
   { path: 'examenvideo', component: ExamenvideoComponent },
   { path: 'examenvideodos', component: ExamenvideodosComponent },
