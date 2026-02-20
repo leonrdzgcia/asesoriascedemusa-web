@@ -13,6 +13,7 @@ import { ExamenvideocuatroComponent } from './examenvideocuatro/examenvideocuatr
 import { ResultadosComponent } from './resultados/resultados.component';
 import { ArchivosComponent } from './archivos/archivos.component';
 import { CatalogovideosComponent } from './catalogovideos/catalogovideos.component';
+import { VideosComponent } from './videos/videos.component';
 
 
 const routes: Routes = [
@@ -23,6 +24,7 @@ const routes: Routes = [
   { path: 'preguntas', component: PreguntasComponent },
   { path: 'archivos', component: ArchivosComponent },
   { path: 'catalogovideos', component: CatalogovideosComponent },
+  { path: 'videos', component: VideosComponent },
   { path: 'examentres', component: ExamenestresComponent },
   { path: 'examencuatro', component: ExamenescuatroComponent },
 

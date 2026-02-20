@@ -22,6 +22,7 @@ import { DialogDeleteComponent } from './preguntas/dialog-delete/dialog-delete.c
 import { DialogEditComponent } from './preguntas/dialog-edit/dialog-edit.component';
 import { ArchivosComponent } from './archivos/archivos.component';
 import { CatalogovideosComponent } from './catalogovideos/catalogovideos.component';
+import { VideosComponent } from './videos/videos.component';
 
 
 
@@ -48,7 +49,8 @@ import { CatalogovideosComponent } from './catalogovideos/catalogovideos.compone
     DialogDeleteComponent,
     DialogEditComponent,
     ArchivosComponent,
-    CatalogovideosComponent
+    CatalogovideosComponent,
+    VideosComponent
   ],
   imports: [
     CommonModule,

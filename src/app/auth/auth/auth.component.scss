@@ -1,10 +1,16 @@
+// Paleta Cedemusa
+$azul-oscuro: #003B7A;
+$azul-medio: #00509E;
+$amarillo: #FFD100;
+$amarillo-hover: #FFE04D;
+
 // Contenedor principal
 .login-container {
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, $azul-oscuro 0%, $azul-medio 100%);
   padding: 20px;
 }
 
@@ -58,7 +64,7 @@
   margin: 0 0 8px;
   font-size: 28px;
   font-weight: 600;
-  color: #2d3748;
+  color: $azul-oscuro;
   text-align: center;
 }
 
@@ -81,7 +87,7 @@
   width: 100%;
 
   mat-icon {
-    color: #667eea;
+    color: $azul-medio;
     margin-right: 8px;
   }
 }
@@ -105,9 +111,17 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
+  background-color: $amarillo !important;
+  color: $azul-oscuro !important;
+  transition: all 0.2s ease;
 
   mat-icon {
     font-size: 20px;
+  }
+
+  &:hover {
+    background-color: $amarillo-hover !important;
+    box-shadow: 0 2px 8px rgba(255, 209, 0, 0.4);
   }
 }
 
@@ -116,6 +130,8 @@
   height: 44px;
   font-size: 14px;
   border-radius: 22px;
+  color: $azul-medio !important;
+  border-color: $azul-medio !important;
 }
 
 // Version

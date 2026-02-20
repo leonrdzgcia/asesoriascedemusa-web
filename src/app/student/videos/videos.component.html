@@ -1,0 +1,80 @@
+<div class="container">
+  <h1>Videos</h1>
+
+  <!-- Sección de carga de videos -->
+  <mat-card class="upload-card">
+    <mat-card-header>
+      <mat-card-title>Cargar Nuevo Video</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="upload-section">
+        <input type="file" #fileInput (change)="onFileSelected($event)" accept="video/*" multiple style="display: none;"/>
+
+        <button mat-raised-button color="accent" (click)="fileInput.click()" class="btn-select-file">
+          <mat-icon>video_library</mat-icon> Seleccionar Videos
+        </button>
+
+        <div class="files-info" *ngIf="selectedFiles.length > 0">
+          <div class="file-count">
+            <mat-icon>videocam</mat-icon>
+            <span>{{ selectedFiles.length }} video(s) seleccionado(s)</span>
+          </div>
+          <div class="file-list">
+            <div class="file-item" *ngFor="let file of selectedFiles">
+              <mat-icon>movie</mat-icon>
+              <span class="file-name">{{ file.name }}</span>
+              <span class="file-size">({{ (file.size / 1024 / 1024).toFixed(2) }} MB)</span>
+            </div>
+          </div>
+        </div>
+
+        <mat-form-field appearance="outline" class="catalogo-select">
+          <mat-label>Catálogo</mat-label>
+          <mat-select [(value)]="catalogoSeleccionado">
+            <mat-option *ngFor="let cat of dataSourceCatalogos" [value]="cat">
+              {{ cat.id }} - {{ cat.clase }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" (click)="subirVideos()" [disabled]="selectedFiles.length === 0 || !catalogoSeleccionado || uploadingFile" class="btn-upload">
+          <mat-icon>cloud_upload</mat-icon> {{ uploadingFile ? 'Subiendo...' : 'Subir Videos' }}
+        </button>
+
+        <button mat-raised-button (click)="actualizarTabla()" class="btn-actualizar">
+          <mat-icon>refresh</mat-icon> Actualizar
+        </button>
+
+      </div>
+
+      <mat-progress-bar mode="indeterminate" *ngIf="uploadingFile"></mat-progress-bar>
+    </mat-card-content>
+  </mat-card>
+
+  <div class="table-container" *ngIf="!loading">
+    <table mat-table [dataSource]="dataSourceVideos" class="mat-elevation-z8">
+
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>Id</th>
+        <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="nombre">
+        <th mat-header-cell *matHeaderCellDef>Nombre</th>
+        <td mat-cell *matCellDef="let element">{{ element.nombreArchivo }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+    <div *ngIf="dataSourceVideos.length === 0" class="no-data">
+      No hay videos disponibles
+    </div>
+  </div>
+
+  <div class="loading-container" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+
+</div>

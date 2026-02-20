@@ -17,10 +17,12 @@ export class ExamenService {
   constructor( private http: HttpClient ) { }
 
   // --------------------------------------------API ftp
-  cargarArchivos(file: File, src: string | number): Observable<any> {
+  cargarArchivos(file: File, src: string | number, video?: string, catalogo?: string): Observable<any> {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('src', src.toString());
+    if (video) { formData.append('video', video); }
+    if (catalogo) { formData.append('catalogo', catalogo); }
     return this.http.post(`${this.apiUrl}upload`, formData, { responseType: 'text' });
   }
   // --------------------------------------------API Archivos
@@ -34,6 +36,9 @@ export class ExamenService {
   }
 
   // --------------------------------------------API Videos
+  getVideos(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/videos`);
+  }
   agregarVideo(videoData: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/videos`, videoData);
   }
@@ -43,6 +48,9 @@ export class ExamenService {
     console.log('getAsignacionesVideosMatricula');
     console.log(this.apiUrl);
     return this.http.get(`${this.apiUrl}/asignacionesvideos/matricula?matricula=${matricula}`);
+  }
+  guardarAsignacionVideo(data: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/asignacionesvideos`, data);
   }
 
   // --------------------------------------------API CATALOGO VIDEOS
