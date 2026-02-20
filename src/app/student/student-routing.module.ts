@@ -17,16 +17,17 @@ import { VideosComponent } from './videos/videos.component';
 
 
 const routes: Routes = [
-  { path: 'asignaciones', component: AsignacionesComponent },
   { path: 'resultados', component: ResultadosComponent },
+  { path: 'asignaciones', component: AsignacionesComponent },
+  { path: 'catalogovideos', component: CatalogovideosComponent },
   { path: 'usuarios', component: UsuariosComponent },
   { path: 'examenes', component: ExamenesComponent },
   { path: 'preguntas', component: PreguntasComponent },
   { path: 'archivos', component: ArchivosComponent },
-  { path: 'catalogovideos', component: CatalogovideosComponent },
   { path: 'videos', component: VideosComponent },
-  { path: 'examentres', component: ExamenestresComponent },
   { path: 'examencuatro', component: ExamenescuatroComponent },
+
+  { path: 'examentres', component: ExamenestresComponent },
 
   { path: 'examenvideo', component: ExamenvideoComponent },
   { path: 'examenvideodos', component: ExamenvideodosComponent },
