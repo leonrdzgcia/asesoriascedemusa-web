@@ -129,6 +129,30 @@
   }
 }
 
+.select-card {
+  margin-bottom: 20px;
+
+  mat-card-header {
+    margin-bottom: 15px;
+
+    mat-card-title {
+      font-size: 18px;
+      color: #3f51b5;
+    }
+  }
+
+  mat-card-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .full-width {
+    width: 100%;
+  }
+}
+
 // Sección de carga de videos
 .upload-card {
   margin-bottom: 20px;

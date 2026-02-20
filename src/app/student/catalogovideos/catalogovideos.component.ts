@@ -16,7 +16,7 @@ export class CatalogovideosComponent implements OnInit {
   @ViewChild('paginatorCatalogos') paginatorCatalogos!: MatPaginator;
 
   displayedColumns: string[] = ['id', 'clase', 'acciones'];
-  displayedColumnsVideos: string[] = ['id', 'nombre','acciones'];
+  
   dataSourceCatalogos = new MatTableDataSource<any>();
   videosData: any[] = [];
   videosDisplayed: any[] = [];
@@ -39,6 +39,16 @@ export class CatalogovideosComponent implements OnInit {
   selectedVideos: File[] = [];
   categoriaParaSubida: number | null = null;
 
+  // Variables para listas desplegables
+  usuarios: any[] = [];
+  usuarioSeleccionado: any = null;
+  catalogoSeleccionadoDerecha: any = null;
+  asignando: boolean = false;
+
+  // Variables para carga de videos en columna derecha
+  selectedVideosUpload: File[] = [];
+  uploadingVideoRight: boolean = false;
+
   // Formulario
   public idCatalogo = new FormControl('');
   public clase = new FormControl('', Validators.required);
@@ -57,6 +67,7 @@ export class CatalogovideosComponent implements OnInit {
   ngOnInit(): void {
     this.cargarCatalogos();
     this.cargarVideos();
+    this.cargarUsuarios();
   }
 
   ngAfterViewInit() {
@@ -75,6 +86,18 @@ export class CatalogovideosComponent implements OnInit {
         console.error('Error al cargar catálogos:', error);
         this.mostrarMensaje('Error al cargar catálogos');
         this.loading = false;
+      }
+    });
+  }
+
+  cargarUsuarios(): void {
+    this.examenService.getUsuarios().subscribe({
+      next: (data) => {
+        this.usuarios = data;
+      },
+      error: (error) => {
+        console.error('Error al cargar usuarios:', error);
+        this.mostrarMensaje('Error al cargar usuarios');
       }
     });
   }
@@ -347,6 +370,155 @@ export class CatalogovideosComponent implements OnInit {
       this.cargarVideosPorCategoria();
     } else {
       this.cargarVideos();
+    }
+  }
+
+  // ============ MÉTODOS PARA ASIGNAR VIDEOS ============
+
+  asignarVideos(): void {
+    if (!this.catalogoSeleccionadoDerecha) {
+      this.mostrarMensaje('Por favor seleccione un catálogo');
+      return;
+    }
+    if (!this.usuarioSeleccionado) {
+      this.mostrarMensaje('Por favor seleccione un usuario');
+      return;
+    }
+
+    this.asignando = true;
+    const claseSeleccionada = this.catalogoSeleccionadoDerecha.clase;
+    const matricula = this.usuarioSeleccionado.matricula;
+
+    // Obtener todos los videos y filtrar por clase
+    this.examenService.getVideos().subscribe({
+      next: (videos) => {
+        const videosFiltrados = videos.filter((v: any) => v.clase === claseSeleccionada);
+
+        if (videosFiltrados.length === 0) {
+          this.mostrarMensaje('No hay videos para la clase seleccionada');
+          this.asignando = false;
+          return;
+        }
+
+        let asignadosCount = 0;
+        let errorCount = 0;
+        const total = videosFiltrados.length;
+
+        videosFiltrados.forEach((video: any) => {
+          const asignacion = {
+            matricula: matricula,
+            nombreVideo: video.nombreArchivo,
+            clase: video.clase,
+            idVideo: video.id
+          };
+
+          this.examenService.guardarAsignacionVideo(asignacion).subscribe({
+            next: () => {
+              asignadosCount++;
+              if (asignadosCount + errorCount === total) {
+                this.finalizarAsignacion(asignadosCount, errorCount);
+              }
+            },
+            error: (error) => {
+              errorCount++;
+              console.error('Error al asignar video:', error);
+              if (asignadosCount + errorCount === total) {
+                this.finalizarAsignacion(asignadosCount, errorCount);
+              }
+            }
+          });
+        });
+      },
+      error: (error) => {
+        console.error('Error al obtener videos:', error);
+        this.mostrarMensaje('Error al obtener la lista de videos');
+        this.asignando = false;
+      }
+    });
+  }
+
+  finalizarAsignacion(asignadosCount: number, errorCount: number): void {
+    this.asignando = false;
+    if (errorCount === 0) {
+      this.mostrarMensaje(`${asignadosCount} video(s) asignado(s) correctamente`);
+    } else if (asignadosCount === 0) {
+      this.mostrarMensaje('Error al asignar los videos');
+    } else {
+      this.mostrarMensaje(`${asignadosCount} asignado(s), ${errorCount} con error(es)`);
+    }
+  }
+
+  // ============ MÉTODOS PARA SUBIR VIDEOS (COLUMNA DERECHA) ============
+
+  onVideoSelectedRight(event: any): void {
+    const files: FileList = event.target.files;
+    if (files && files.length > 0) {
+      this.selectedVideosUpload = [];
+      const maxSize = 100 * 1024 * 1024; // 100MB
+
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+
+        if (!file.type.startsWith('video/')) {
+          this.mostrarMensaje(`${file.name} no es un video válido`);
+          continue;
+        }
+
+        if (file.size > maxSize) {
+          this.mostrarMensaje(`${file.name} es demasiado grande. Máximo 100MB`);
+          continue;
+        }
+
+        this.selectedVideosUpload.push(file);
+      }
+    }
+  }
+
+  subirVideosRight(): void {
+    if (this.selectedVideosUpload.length === 0) {
+      this.mostrarMensaje('Por favor seleccione al menos un video');
+      return;
+    }
+    if (!this.catalogoSeleccionadoDerecha) {
+      this.mostrarMensaje('Por favor seleccione un catálogo');
+      return;
+    }
+
+    this.uploadingVideoRight = true;
+    let uploadedCount = 0;
+    let errorCount = 0;
+    const totalFiles = this.selectedVideosUpload.length;
+    const nombreCatalogo = this.catalogoSeleccionadoDerecha.clase;
+
+    this.selectedVideosUpload.forEach((file) => {
+      this.examenService.cargarArchivos(file, '2', file.name, nombreCatalogo).subscribe({
+        next: () => {
+          uploadedCount++;
+          if (uploadedCount + errorCount === totalFiles) {
+            this.finalizarSubidaRight(uploadedCount, errorCount);
+          }
+        },
+        error: (error) => {
+          errorCount++;
+          console.error(`Error al cargar video ${file.name}:`, error);
+          if (uploadedCount + errorCount === totalFiles) {
+            this.finalizarSubidaRight(uploadedCount, errorCount);
+          }
+        }
+      });
+    });
+  }
+
+  finalizarSubidaRight(uploadedCount: number, errorCount: number): void {
+    this.uploadingVideoRight = false;
+    this.selectedVideosUpload = [];
+
+    if (errorCount === 0) {
+      this.mostrarMensaje(`${uploadedCount} video(s) subido(s) exitosamente`);
+    } else if (uploadedCount === 0) {
+      this.mostrarMensaje('Error al subir los videos');
+    } else {
+      this.mostrarMensaje(`${uploadedCount} subido(s), ${errorCount} con error(es)`);
     }
   }
 }

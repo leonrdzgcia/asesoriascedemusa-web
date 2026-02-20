@@ -83,126 +83,45 @@
       </div>
     </div>
 
-    <!-- Columna derecha: Tabla de videos con scroll infinito -->
+    <!-- Columna derecha: Asignación y subida de videos -->
     <div class="right-column">
-      <h2>Videos</h2>
+      <h2>Asignar Videos</h2>
 
-      <!-- Sección de carga de videos -->
-      <mat-card class="upload-card">
+      <!-- Asignación de videos -->
+      <mat-card class="select-card">
         <mat-card-header>
-          <mat-card-title>Cargar Nuevo Video</mat-card-title>
+          <mat-card-title>Asignación de Videos</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <div class="upload-section">
-            <input type="file" #videoInput (change)="onVideoSelected($event)" accept="video/*" multiple style="display: none;"/>
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Seleccionar Catálogo</mat-label>
+            <mat-select [(value)]="catalogoSeleccionadoDerecha">
+              <mat-option *ngFor="let categoria of categorias" [value]="categoria">
+                {{ categoria.id }} - {{ categoria.clase }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
 
-            <mat-form-field appearance="fill" class="full-width">
-              <mat-label>Categoría del Video</mat-label>
-              <mat-select [(value)]="categoriaParaSubida">
-                <mat-option *ngFor="let categoria of categorias" [value]="categoria.id">
-                  {{ categoria.clase }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Seleccionar Usuario</mat-label>
+            <mat-select [(value)]="usuarioSeleccionado">
+              <mat-option *ngFor="let usuario of usuarios" [value]="usuario">
+                {{ usuario.matricula }} - {{ usuario.nombre }} {{ usuario.apellidopaterno }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
 
-            <div class="button-row-upload">
-              <button mat-raised-button color="accent" (click)="videoInput.click()" class="btn-select-file">
-                <mat-icon>folder_open</mat-icon> Seleccionar Videos
-              </button>
-
-              <button mat-raised-button color="primary" (click)="cargarVideo()"
-                [disabled]="selectedVideos.length === 0 || uploadingVideo || !categoriaParaSubida" class="btn-upload">
-                <mat-icon>cloud_upload</mat-icon> {{ uploadingVideo ? 'Subiendo...' : 'Subir Videos' }}
-              </button>
-            </div>
-
-            <div class="files-info" *ngIf="selectedVideos.length > 0">
-              <div class="file-count">
-                <mat-icon>videocam</mat-icon>
-                <span>{{ selectedVideos.length }} video(s) seleccionado(s)</span>
-              </div>
-              <div class="file-list">
-                <div class="file-item" *ngFor="let file of selectedVideos">
-                  <mat-icon>videocam</mat-icon>
-                  <span class="file-name">{{ file.name }}</span>
-                  <span class="file-size">({{ (file.size / 1024 / 1024).toFixed(2) }} MB)</span>
-                </div>
-              </div>
-            </div>
-
-            <mat-progress-bar mode="indeterminate" *ngIf="uploadingVideo"></mat-progress-bar>
+          <div class="button-row">
+            <button mat-raised-button color="primary" (click)="asignarVideos()"
+              [disabled]="!catalogoSeleccionadoDerecha || !usuarioSeleccionado || asignando">
+              <mat-icon>assignment</mat-icon>
+              {{ asignando ? 'Asignando...' : 'Asignar' }}
+            </button>
           </div>
+
+          <mat-progress-bar mode="indeterminate" *ngIf="asignando"></mat-progress-bar>
         </mat-card-content>
       </mat-card>
-
-      <!-- Selector de categoría y botón cargar -->
-      <div class="video-filter-section">
-        <mat-form-field appearance="fill" class="categoria-select">
-          <mat-label>Seleccionar Categoría</mat-label>
-          <mat-select [(value)]="categoriaSeleccionadaId">
-            <mat-option [value]="null">-- Todas las categorías --</mat-option>
-            <mat-option *ngFor="let categoria of categorias" [value]="categoria.id">
-              {{ categoria.clase }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <button
-          mat-raised-button
-          color="primary"
-          (click)="cargarVideosPorCategoria()"
-          [disabled]="!categoriaSeleccionadaId"
-          class="btn-cargar-video">
-          <mat-icon>play_circle</mat-icon>
-          Cargar Videos
-        </button>
-      </div>
-
-      <div class="videos-scroll-container" (scroll)="onScroll($event)" *ngIf="!loadingVideos">
-        <table mat-table [dataSource]="videosDisplayed" class="mat-elevation-z8 videos-table">
-          <!-- Columna ID -->
-          <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef>ID</th>
-            <td mat-cell *matCellDef="let element">{{ element.id }}</td>
-          </ng-container>
-          <!-- Columna Nombre -->
-          <ng-container matColumnDef="nombre">
-            <th mat-header-cell *matHeaderCellDef>Nombre</th>
-            <td mat-cell *matCellDef="let element">{{ element.nombreArchivo }}</td>
-          </ng-container>
-          <!-- Columna Acciones -->
-          <ng-container matColumnDef="acciones">
-            <th mat-header-cell *matHeaderCellDef>Acciones</th>
-            <td mat-cell *matCellDef="let element">
-              <button mat-icon-button color="primary" matTooltip="Ver">
-                <mat-icon>visibility</mat-icon>
-              </button>
-            </td>
-          </ng-container>
-
-          <tr mat-header-row *matHeaderRowDef="displayedColumnsVideos; sticky: true"></tr>
-          <tr mat-row *matRowDef="let row; columns: displayedColumnsVideos;"></tr>
-        </table>
-
-        <!-- Indicador de carga al cargar más -->
-        <div class="loading-more" *ngIf="loadingMoreVideos">
-          <mat-spinner diameter="40"></mat-spinner>
-          <span>Cargando más videos...</span>
-        </div>
-
-        <div *ngIf="videosDisplayed.length === 0" class="no-data">
-          No hay videos registrados
-        </div>
-
-        <div *ngIf="videosDisplayed.length >= videosData.length && videosDisplayed.length > 0" class="end-message">
-          No hay más videos para mostrar
-        </div>
-      </div>
-
-      <!-- Indicador de carga inicial para videos -->
-      <div class="loading-container" *ngIf="loadingVideos">
-        <mat-spinner></mat-spinner>
-      </div>
     </div>
   </div>
 </div>
