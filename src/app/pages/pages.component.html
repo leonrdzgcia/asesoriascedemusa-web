@@ -101,19 +101,18 @@
       <!-- Seccion Videos Admin -->
       <div *ngIf="bandera==1" class="menu-section">
         <p class="menu-label">Videos</p>
-
         <mat-form-field appearance="outline" class="sidebar-select">
           <mat-label>Seleccionar video</mat-label>
           <mat-select [(value)]="videoSeleccionado">
-            <mat-option *ngFor="let option of optionsVideos" [value]="option.idVideo">
-              {{ option.nombreVideo }}
+            <mat-option *ngFor="let option of optionsVideos" [value]="option.idVideo" class="video-option">
+              <span class="video-option-name">{{ option.nombreVideo?.replace('.mp4','')?.replace('.MP4','') }}</span>
             </mat-option>
           </mat-select>
         </mat-form-field>
 
         <button mat-raised-button color="accent" class="action-button" (click)="verVideo()">
           <mat-icon>play_circle</mat-icon>
-          Ver video Ad
+          Ver video
         </button>
       </div>
 
@@ -144,15 +143,16 @@
         <mat-form-field appearance="outline" class="sidebar-select">
           <mat-label>Seleccionar video</mat-label>
           <mat-select [(value)]="videoSeleccionado">
-            <mat-option *ngFor="let option of optionsVideos" [value]="option.idVideo">
-              {{ option.idVideo }} - {{ option.nombreVideo }}
+            <mat-option *ngFor="let option of optionsVideos" [value]="option.idVideo" class="video-option">
+              <span class="video-option-num">#{{ option.idVideo }}</span>
+              <span class="video-option-name">{{ option.nombreVideo?.replace('.mp4','')?.replace('.MP4','') }}</span>
             </mat-option>
           </mat-select>
         </mat-form-field>
 
         <button mat-raised-button color="accent" class="action-button" (click)="verVideo()">
           <mat-icon>play_circle</mat-icon>
-          Ver video Es
+          Ver video
         </button>
       </div>
 
