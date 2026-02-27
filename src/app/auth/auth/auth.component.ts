@@ -51,10 +51,8 @@ export class AuthComponent implements OnInit {
   datosUsuario() {
     const usuario = this.formLogin.value.usuario;
     const pass = this.formLogin.value.pass;
-
     // Mostrar spinner inmediatamente
     this.loading = true;
-
     // Validar usuario ADMIN
     if (usuario === 'admin') {
       this.api.getUsuarioMatricula(usuario).subscribe({
@@ -69,6 +67,7 @@ export class AuthComponent implements OnInit {
               this.dataService.perfil = 'admin';
               this.dataService.nombre = 'Jonathan Sanchez';
               this.dataService.matricula = 'admin';
+              this.dataService.guardarSesion();
               // Mantener loading true para la navegación
               setTimeout(() => {
                 this.router.navigate(['dashboard']);
@@ -117,6 +116,7 @@ export class AuthComponent implements OnInit {
             this.usuarioPassDB = this.dataUsuario[0].pass;
             if (usuario === this.usuarioAdminDB && pass === this.usuarioPassDB) {
               console.log('--- USUARIO PASS USER CORRECTO');
+              this.dataService.guardarSesion();
               // Mantener loading true para la navegación
               setTimeout(() => {
                 this.router.navigate(['dashboard']);

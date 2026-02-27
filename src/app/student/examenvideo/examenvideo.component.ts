@@ -1,67 +1,41 @@
-import { Component, OnInit } from '@angular/core';
-//import { VgApiService, VgCoreModule } from '@videogular/ngx-videogular/core';
-//import { VgControlsModule } from '@videogular/ngx-videogular/controls';
-//import { VgOverlayPlayModule } from '@videogular/ngx-videogular/overlay-play';
-//import { VgBufferingModule } from '@videogular/ngx-videogular/buffering';
-//import { VgStreamingModule } from '@videogular/ngx-videogular/streaming'
-import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { FormBuilder } from '@angular/forms';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/services/data.service';
-import { ExamenService } from 'src/app/services/examen.service';
-import { MenuService } from 'src/app/services/menu.service';
 
 @Component({
   selector: 'app-examenvideo',
   templateUrl: './examenvideo.component.html',
   styleUrls: ['./examenvideo.component.scss']
 })
-export class ExamenvideoComponent {
+export class ExamenvideoComponent implements OnInit, OnDestroy {
 
-  //api: VgApiService = new VgApiService;
-  srcV = "./assets/img/";
-  srcVc = "./assets/img/";
-  banderaPreguntas = 0;
-  totalPreguntas = 0;
-  examenidvideo = 0;
-  banderBack = true;
-  banderNext = false;
-  banderSend = true;
+  @ViewChild('videoPlayer') videoPlayer!: ElementRef<HTMLVideoElement>;
 
-  arrayVideos: Array<[number, string]> = [
-    [1, "Red. Ind. Clase 3 Noticia.mp4"],
-    [2, "2 Jerarquia de Operaciones.mp4"],
-    [3, "3 Suma de Polinomios.mp4"],
-    [4, "4 Multiplicación de Polinomios"],
-    [5, "5 Leyes de los exponentes"]
-];
+  readonly baseUrl = 'https://asesoriascedemusa.com/assets/img/vid/';
+  videoUrl = '';
+  nombreVideo = '';
 
+  private sub!: Subscription;
 
-constructor(
-  private dataService: DataService,
-  private api: ExamenService,
-  private _snackBar: MatSnackBar,
-  private router: Router,
-  private menuServices: MenuService
-  ) {
-
-}
+  constructor(private dataService: DataService) {}
 
   ngOnInit(): void {
+    this.sub = this.dataService.videoSeleccionado$.subscribe(nombre => {
+      if (nombre) {
+        this.nombreVideo = nombre;
+        this.videoUrl = this.baseUrl + encodeURIComponent(nombre);
+        // Forzar recarga del elemento <video> del navegador
+        setTimeout(() => {
+          if (this.videoPlayer?.nativeElement) {
+            this.videoPlayer.nativeElement.load();
+          }
+        }, 0);
+      }
+    });
+  }
 
-    console.log(this.dataService.examenavideo);
-    this.examenidvideo = this.dataService.examenavideo;
-
-
-    console.log(this.dataService.video);
-    this.arrayVideos[0];
-    console.log(this.arrayVideos[0]);
-    console.log(this.arrayVideos[this.dataService.video]);
-    console.log(this.arrayVideos[this.dataService.video][0]);
-    console.log(this.arrayVideos[this.dataService.video][1]);
-    this.srcVc ="./assets/img/vid/"+this.arrayVideos[this.dataService.video][1];
-    console.log(this.srcVc);
+  ngOnDestroy(): void {
+    this.sub?.unsubscribe();
   }
 
 }

@@ -1,8 +1,5 @@
-import { ObserversModule } from '@angular/cdk/observers';
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { Usuario } from '../interfaces/usuario';
+import { BehaviorSubject } from 'rxjs';
 
 
 
@@ -32,27 +29,60 @@ export class DataService {
   public banderaUsuario: any;
   public tiempoExamen:number = 0; ///1 con tiempo, 2 sin teimpo
   public video: any;
+  public nombreVideoSeleccionado: string = '';
+  public videoSeleccionado$ = new BehaviorSubject<string>('');
 
   constructor() {
-    this.matricula = 0; 
+    this.matricula = 0;
     this.nombre = 'jonathan Sanchez';
     this.apellidopaterno = 'P';
     this.apellidomaterno = 'M';
     this.pass= '';
-    this.email = ''; 
-    this.celular = ''; 
-    this.nivel = 'Facultad'; 
-    this.fechaAlta = ''; 
+    this.email = '';
+    this.celular = '';
+    this.nivel = 'Facultad';
+    this.fechaAlta = '';
     this.fechaBaja = '';
-    this.examenasignado = 26;  
-    this.examenavideo= 0;  
-    this.idExamenSeleccionado= 0;  
-    this.perfil = 'NA';  
-    this.examen1 = 0;  
-    this.examen1 = 0;  
-    this.examen3 = 3;  
-    this.banderaUsuario = 1;  
-    this.video= 0;  
+    this.examenasignado = 26;
+    this.examenavideo= 0;
+    this.idExamenSeleccionado= 0;
+    this.perfil = 'NA';
+    this.examen1 = 0;
+    this.examen1 = 0;
+    this.examen3 = 3;
+    this.banderaUsuario = 1;
+    this.video= 0;
+    // Restaurar sesión desde localStorage si existe
+    this.cargarSesion();
+  }
+
+  cargarSesion(): void {
+    const sesion = localStorage.getItem('cedemusa_sesion');
+    if (sesion) {
+      try {
+        const datos = JSON.parse(sesion);
+        this.banderaUsuario = datos.banderaUsuario ?? this.banderaUsuario;
+        this.perfil       = datos.perfil       ?? this.perfil;
+        this.matricula    = datos.matricula     ?? this.matricula;
+        this.nombre       = datos.nombre        ?? this.nombre;
+      } catch (e) {
+        localStorage.removeItem('cedemusa_sesion');
+      }
+    }
+  }
+
+  guardarSesion(): void {
+    const datos = {
+      banderaUsuario: this.banderaUsuario,
+      perfil:         this.perfil,
+      matricula:      this.matricula,
+      nombre:         this.nombre
+    };
+    localStorage.setItem('cedemusa_sesion', JSON.stringify(datos));
+  }
+
+  limpiarSesion(): void {
+    localStorage.removeItem('cedemusa_sesion');
   }
 
 }

@@ -1,30 +1,14 @@
-<div>
-    <!--h2>Reproductor de Video1</h2-->
-    <video class="video" controls>
-      <source  *ngIf="examenidvideo==1"  src="./assets/img/vid/1 Sumas y Restas.mp4" type="video/mp4">
-      <source  *ngIf="examenidvideo==2"  src="./assets/img/vid/2 Jerarquia de Operaciones.mp4" type="video/mp4">
-      <source  *ngIf="examenidvideo==3"  src="./assets/img/vid/3 Suma de Polinomios.mp4" type="video/mp4">
-      <source  *ngIf="examenidvideo==4"  src="./assets/img/vid/4 Multiplicacion de Polinomios.mp4" type="video/mp4">
-      <source  *ngIf="examenidvideo==5"  src="./assets/img/vid/5 Leyes de los exponentes.mp4" type="video/mp4">
-      <source  *ngIf="examenidvideo==6"  src="./assets/img/vid/6 Funciones Lineales.mp4" type="video/mp4">
-      <source  *ngIf="examenidvideo==7"  src="./assets/img/vid/7 Factorizacion de Polinomios.mp4" type="video/mp4">
-      <source  *ngIf="examenidvideo==8"  src="./assets/img/vid/8 Solucion de ecuaciones lineales.mp4" type="video/mp4">
-      <source  *ngIf="examenidvideo==9"  src="./assets/img/vid/9 Funciones Cuadraticas.mp4" type="video/mp4">
-      <source  *ngIf="examenidvideo==10" src="./assets/img/vid/10 Solucion de Ecuaciones Cuadraticas.mp4" type="video/mp4">
-      <source  *ngIf="examenidvideo==11" src="./assets/img/vid/11 Teorema de Pitagoras.mp4" type="video/mp4">
-      <source  *ngIf="examenidvideo==12" src="./assets/img/vid/12 Distancia entre puntos y PM.mp4" type="video/mp4">
-      <source  *ngIf="examenidvideo==13" src="./assets/img/vid/13 Teorema de Thales.mp4" type="video/mp4">
-      <source  *ngIf="examenidvideo==14" src="./assets/img/vid/14 Razones y proporciones.mp4" type="video/mp4">
-      <source  *ngIf="examenidvideo==15" src="./assets/img/vid/15 Rectas Paralelas y Secante.mp4" type="video/mp4">
-      <source  *ngIf="examenidvideo==16" src="./assets/img/vid/16 Razones Trigonometricas.mp4" type="video/mp4">
-      <source  *ngIf="examenidvideo==17" src="./assets/img/vid/17 Graficas con razones trigonometricas.mp4" type="video/mp4">
-      <source  *ngIf="examenidvideo==18" src="./assets/img/vid/18 Ley de los Senos y Cosenos.mp4" type="video/mp4">
-      <source  *ngIf="examenidvideo==19" src="./assets/img/vid/19 Frecuencias.mp4" type="video/mp4">
-      <source  *ngIf="examenidvideo==20" src="./assets/img/vid/20 Medidas de Posicion.mp4" type="video/mp4">
-      <source  *ngIf="examenidvideo==21" src="./assets/img/vid/21 Medidas de Dispersion.mp4" type="video/mp4">
-      <source  *ngIf="examenidvideo==22" src="./assets/img/vid/22 Sistema de ecuaciones lineales.mp4" type="video/mp4">
-      <!--source src="srcV" type="video/mp4"-->
+<div class="video-container">
+  <h3 class="video-title" *ngIf="nombreVideo">{{ nombreVideo.replace('.mp4','').replace('.MP4','') }}</h3>
+
+  <div *ngIf="videoUrl; else sinVideo">
+    <video #videoPlayer class="video" controls controlsList="nodownload">
+      <source [src]="videoUrl" type="video/mp4">
       Tu navegador no soporta el elemento de video.
-      
     </video>
   </div>
+
+  <ng-template #sinVideo>
+    <p class="no-video">No se ha seleccionado ningún video.</p>
+  </ng-template>
+</div>

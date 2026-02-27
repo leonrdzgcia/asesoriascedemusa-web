@@ -106,9 +106,12 @@ export class PagesComponent {
   }
 
   verVideo(){
-    this.dataService.examenavideo = this.videoSeleccionado;
-    console.log(this.videoSeleccionado);
-    console.log(this.dataService.examenavideo);
+    const videoObj = this.optionsVideos.find((v: any) => v.idVideo === this.videoSeleccionado);
+    if (videoObj) {
+      this.dataService.examenavideo = videoObj.idVideo;
+      this.dataService.nombreVideoSeleccionado = videoObj.nombreVideo;
+      this.dataService.videoSeleccionado$.next(videoObj.nombreVideo);
+    }
     this.router.navigateByUrl('/dashboard/student/examenvideo');
   }
 
@@ -199,6 +202,7 @@ export class PagesComponent {
   }
 
   logout() {
+    this.dataService.limpiarSesion();
     this.router.navigateByUrl('/login');
   }
 }
