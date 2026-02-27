@@ -12,17 +12,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogDeleteComponent } from './dialog-delete/dialog-delete.component';
 import { DialogEditComponent } from './dialog-edit/dialog-edit.component';
 
-
-
 @Component({
   selector: 'app-preguntas',
   templateUrl: './preguntas.component.html',
   styleUrls: ['./preguntas.component.scss']
 })
 export class PreguntasComponent implements OnInit, AfterViewInit {
-
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-
   //displayedColumns: string[] = ['idPregunta', 'idExamen', 'pregunta', 'respuesta_1', 'respuesta_2', 'respuesta_3', 'correcta'];
   displayedColumns: string[] = ['idPregunta', 'idExamen', 'pregunta', 'respuesta_1', 'respuesta_2', 'respuesta_3', 'correcta', 'acciones'];
   //dataPreguntas: any[] = [];
@@ -31,7 +27,6 @@ export class PreguntasComponent implements OnInit, AfterViewInit {
   listaExamenes: any[] = [];
   examenSeleccionado: number | null = null;
   loadingFiltro: boolean = false;
-
   dataPregunta: Pregunta = {
     //idPregunta: 0,
     idExamen: 0,
@@ -72,8 +67,7 @@ export class PreguntasComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     console.log('--ngOnInit UsuariosComponent ');
-    console.log(this.dataService.nombre);
-    console.log(this.dataService.perfil);
+    console.log(this.dataService.nombre);//    console.log(this.dataService.perfil);
     this.llenadoListaPreguntas();//this.obtenerPreguntaId();
     this.cargarExamenes();
   }
@@ -102,11 +96,18 @@ export class PreguntasComponent implements OnInit, AfterViewInit {
   }
 
   llenadoListaPreguntas() {
-    //console.log(this.listaUsuarios);
     this.api.getPreguntas().subscribe(
       (data) => {
-        this.todasLasPreguntas = data;
-        this.dataPreguntas.data = data;
+        const ordenado = data.sort((a: any, b: any) => a.idPregunta - b.idPregunta);
+        this.todasLasPreguntas = ordenado;
+        // Mantener el filtro activo si hay un examen seleccionado
+        if (this.examenSeleccionado !== null) {
+          this.dataPreguntas.data = ordenado.filter(
+            (p: any) => p.idExamen === this.examenSeleccionado
+          );
+        } else {
+          this.dataPreguntas.data = ordenado;
+        }
         console.log('Preguntas');
         console.log(data);
       },
@@ -114,7 +115,6 @@ export class PreguntasComponent implements OnInit, AfterViewInit {
         console.error('Error fetching data list:', error);
       }
     );
-    //this.dataSource2 = new MatTableDataSource(this.dataSource);
   }
 
   cargarExamenes() {
@@ -132,7 +132,6 @@ export class PreguntasComponent implements OnInit, AfterViewInit {
   filtrarPorExamen() {
     // Mostrar spinner
     this.loadingFiltro = true;
-
     // Simular delay para mostrar el spinner (opcional, pero mejora UX en filtrados rápidos)
     setTimeout(() => {
       if (this.examenSeleccionado === null) {
@@ -140,16 +139,14 @@ export class PreguntasComponent implements OnInit, AfterViewInit {
         this.dataPreguntas.data = this.todasLasPreguntas;
         console.log('Mostrando todas las preguntas');
       } else {
-        // Filtrar por examen seleccionado
-        const preguntasFiltradas = this.todasLasPreguntas.filter(
-          pregunta => pregunta.idExamen === this.examenSeleccionado
-        );
+        // Filtrar por examen seleccionado y ordenar por idPregunta
+        const preguntasFiltradas = this.todasLasPreguntas
+          .filter(pregunta => pregunta.idExamen === this.examenSeleccionado)
+          .sort((a: any, b: any) => a.id - b.id);
         this.dataPreguntas.data = preguntasFiltradas;
-        console.log('Filtrando por examen ID:', this.examenSeleccionado);
-        console.log('Preguntas filtradas:', preguntasFiltradas.length);
+        console.log('Filtrando por examen ID:', this.examenSeleccionado ,'Preguntas filtradas:', preguntasFiltradas.length);
         console.log(this.dataPreguntas.data);
       }
-
       // Ocultar spinner después del filtrado
       this.loadingFiltro = false;
     }, 300);

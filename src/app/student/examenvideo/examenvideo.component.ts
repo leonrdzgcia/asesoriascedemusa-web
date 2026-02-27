@@ -30,20 +30,11 @@ export class ExamenvideoComponent {
   banderSend = true;
 
   arrayVideos: Array<[number, string]> = [
-    [1, "1 Sumas y Restas.mp4"],
+    [1, "Red. Ind. Clase 3 Noticia.mp4"],
     [2, "2 Jerarquia de Operaciones.mp4"],
     [3, "3 Suma de Polinomios.mp4"],
     [4, "4 Multiplicación de Polinomios"],
-    [5, "5 Leyes de los exponentes"],
-    [6, "6 Funciones Lineales"],
-    [7, "7 Factorizacion de Polinomios"],
-    [8, "8 Solución de ecuaciones lineales"],
-    [9, "9 Funciones Cuadráticas"],
-    [10, "10 Solución de Ecuaciones Cuadraticas"],
-    [11, "11 Teorema de Pitagoras"],
-    [12, "12 Distancia entre puntos y PM"],
-    [13, "uno"],
-    [14, "dos"],
+    [5, "5 Leyes de los exponentes"]
 ];
 
 
