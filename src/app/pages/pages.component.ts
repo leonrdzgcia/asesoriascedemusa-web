@@ -32,12 +32,10 @@ export class PagesComponent {
   matriculaLogin = '';
   nombreLogin = '';
   video = 'Seleccione'
-
   arrayExamenes: string[] = [];
   arrayExamenesInt: Examenint[] = [];
   examenSeleccionado: any;
   videoSeleccionado: any;
-
   optionsVideos: any[] = [];
 
   constructor(
@@ -49,24 +47,14 @@ export class PagesComponent {
     private router: Router,
     private menuServices: MenuService
   ) {
-
   }
 
   ngOnInit(): void {
     console.log(' -- ngOnInit PagesComponent ');
-    /*console.log(this.matriculaLogin);
-    console.log(this.nombreLogin);*/
-    console.log(this.dataSource);
-    console.log(this.arrayExamenes);
-    console.log(this.arrayExamenesInt);
     this.arrayExamenesInt = [];
     console.log(this.dataService);
-    console.log(this.dataService.banderaUsuario);
-    console.log(this.dataService.matricula);
     this.matriculaLogin = this.dataService.matricula;
-
     this.nombreLogin = this.dataService.nombre;
-    //console.log(this.matriculaLogin);console.log(this.nombreLogin);
     this.obtenerasignaciones();
     this.obtenerasignacionesporMatreicula();
     this.obtenerExamenes();
@@ -74,21 +62,14 @@ export class PagesComponent {
     //this.bandera = 1;//administrador
     this.bandera=this.dataService.banderaUsuario;//estudiante
     this.cargarMenu();
-    /*console.log(this.dataService); console.log(this.dataService.perfil);this.bandera=this.dataService.perfil;
-    console.log(this.bandera); console.log(this.dataService);*/
     this.bandera = this.dataService.banderaUsuario;
-    console.log(this.bandera);
   }
 
   botonActualizar(){
-    console.log("---botonActualizar");
     this.ngOnInit();
-
   }
 
   click(num: number) {
-    console.log("---CLICK ROUTER", num);
-    console.log(this.dataService.video);
     this.dataService.video = num;
   }
 
@@ -96,13 +77,8 @@ export class PagesComponent {
     console.log("---CLICK PRESENTAR ");
     console.log(this.dataService);
     console.log(this.examenSeleccionado);
-    console.log(this.examenSeleccionado.idExamen);
-    console.log(this.examenSeleccionado.nombreExamen);
-    console.log(this.dataService.idExamenSeleccionado);
     this.dataService.idExamenSeleccionado = this.examenSeleccionado.idExamen;
-    console.log(this.dataService.idExamenSeleccionado);
     this.router.navigateByUrl('/dashboard/student/examencuatro');
-    //console.log(this.arrayExamenesInt);
   }
 
   verVideo(){
@@ -116,14 +92,11 @@ export class PagesComponent {
   }
 
   ngAfterViewInit() {
-    //console.log('00')
     this.observer.observe(['(max-width: 800px)']).subscribe((resp: any) => {
       if (resp.matches) {
-        console.log('11')
         this.sidenav.mode = 'over';
         this.sidenav.close();
       } else {
-        //console.log('22')
         this.sidenav.mode = 'side';
         this.sidenav.open();
       }
@@ -136,14 +109,12 @@ export class PagesComponent {
     this.menuServices.getMenu().subscribe(data => {
       this.menu = data;
     })
-
   }
 
   obtenerasignaciones() {
     this.api.getAsignaciones().subscribe(
       (data) => {
         this.dataSource = data;
-        console.log(data);
         this.examenmenu = data;
       },
       (error) => {
@@ -153,16 +124,13 @@ export class PagesComponent {
   }
 
   obtenerasignacionesporMatreicula() {
-    //console.log(this.arrayExamenesInt);
     this.api.getAsignacionesMatricula(this.dataService.matricula).subscribe(
       (data) => {
         this.arrayExamenes = data;
-        console.log(data);
         for (let index = 0; index < data.length; index++) {
           this.arrayExamenesInt.push( { idExamen : data[index].idExamen, nombreExamen : data[index].nombreExamen });
         }
         this.examenmenu = data;
-        console.log(this.arrayExamenesInt);
       },
       (error) => {
         console.error('Error fetching data list:', error);
@@ -171,14 +139,10 @@ export class PagesComponent {
   }
 
   obtenerAsignacionesVideos() {
-    console.log(' // obtenerAsignacionesVideos');
-    console.log(this.dataService.matricula);
     this.api.getAsignacionesVideosMatricula(this.dataService.matricula).subscribe(
       (data) => {
-
-        console.log(data);
+        //console.log(data);
         this.optionsVideos = data;
-        console.log(this.optionsVideos);
       },
       (error) => {
         console.error('Error fetching videos list:', error);
