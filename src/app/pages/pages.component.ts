@@ -36,7 +36,7 @@ export class PagesComponent {
   arrayExamenesInt: Examenint[] = [];
   examenSeleccionado: any;
   videoSeleccionado: any;
-  optionsVideos: any[] = [];
+  listaVideosAsignados: any[] = [];
 
   constructor(
     private observer: BreakpointObserver,
@@ -82,7 +82,7 @@ export class PagesComponent {
   }
 
   verVideo(){
-    const videoObj = this.optionsVideos.find((v: any) => v.idVideo === this.videoSeleccionado);
+    const videoObj = this.listaVideosAsignados.find((v: any) => v.idVideo === this.videoSeleccionado);
     if (videoObj) {
       this.dataService.examenavideo = videoObj.idVideo;
       this.dataService.nombreVideoSeleccionado = videoObj.nombreVideo;
@@ -141,8 +141,11 @@ export class PagesComponent {
   obtenerAsignacionesVideos() {
     this.api.getAsignacionesVideosMatricula(this.dataService.matricula).subscribe(
       (data) => {
-        //console.log(data);
-        this.optionsVideos = data;
+        console.log('-- getAsignacionesVideosMatricula');
+        console.log(data);
+        this.listaVideosAsignados = data.sort((a: any, b: any) =>
+          (a.nombreVideo || '').localeCompare(b.nombreVideo || '')
+        );
       },
       (error) => {
         console.error('Error fetching videos list:', error);

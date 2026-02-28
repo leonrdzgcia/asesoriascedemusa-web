@@ -85,7 +85,7 @@
         <mat-form-field appearance="outline" class="sidebar-select">
           <mat-label>Seleccionar video</mat-label>
           <mat-select [(value)]="videoSeleccionado">
-            <mat-option *ngFor="let option of optionsVideos" [value]="option.idVideo" class="video-option">
+            <mat-option *ngFor="let option of listaVideosAsignados" [value]="option.idVideo" class="video-option">
               <span class="video-option-name">{{ option.nombreVideo?.replace('.mp4','')?.replace('.MP4','') }}</span>
             </mat-option>
           </mat-select>
@@ -117,7 +117,7 @@
         <mat-form-field appearance="outline" class="sidebar-select">
           <mat-label>Seleccionar video</mat-label>
           <mat-select [(value)]="videoSeleccionado">
-            <mat-option *ngFor="let option of optionsVideos" [value]="option.idVideo" class="video-option">
+            <mat-option *ngFor="let option of listaVideosAsignados" [value]="option.idVideo" class="video-option">
               <span class="video-option-name">{{ option.nombreVideo?.replace('.mp4','')?.replace('.MP4','') }}</span>
             </mat-option>
           </mat-select>
