@@ -98,7 +98,7 @@
       <!-- Seccion Estudiante -->
       <div *ngIf="bandera==2" class="menu-section">
         <p class="menu-label">Examenes</p>
-        <mat-form-field appearance="outline" class="sidebar-select">
+        <mat-form-field appearance="outline" class="sidebar-select examen-select" [class.examen-activo]="examenSeleccionado">
           <mat-label>Seleccionar examen</mat-label>
           <mat-select [(value)]="examenSeleccionado">
             <mat-option *ngFor="let opcion of arrayExamenesInt" [value]="opcion">

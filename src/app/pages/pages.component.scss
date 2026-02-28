@@ -150,6 +150,7 @@ $fondo: #EEF2F7;
   margin-bottom: 8px;
 
   ::ng-deep {
+    // Legacy API
     .mat-form-field-outline {
       color: rgba(255, 209, 0, 0.45);
     }
@@ -170,8 +171,87 @@ $fondo: #EEF2F7;
       color: $amarillo;
     }
 
+    // MDC API (Angular 15+)
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: rgba(255, 209, 0, 0.45) !important;
+    }
+
+    .mat-mdc-select-value,
+    .mat-mdc-select-value-text {
+      color: white;
+    }
+
+    .mat-mdc-select-arrow svg {
+      fill: $amarillo;
+    }
+
+    .mdc-floating-label,
+    .mat-mdc-floating-label {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
     input {
       color: white;
+    }
+  }
+}
+
+// Select de examen con valor seleccionado: fondo amarillo y texto blanco
+.sidebar-select.examen-activo {
+  ::ng-deep {
+    // Angular Material 15+ (MDC)
+    .mat-mdc-text-field-wrapper,
+    .mdc-text-field {
+      background-color: $amarillo !important;
+      border-radius: 4px !important;
+    }
+
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: $amarillo-oscuro !important;
+    }
+
+    .mat-mdc-select-value,
+    .mat-mdc-select-value-text,
+    .mdc-floating-label,
+    .mat-mdc-floating-label {
+      color: white !important;
+      font-weight: 600;
+    }
+
+    .mat-mdc-select-arrow svg {
+      fill: white !important;
+    }
+
+    .mat-mdc-form-field-label,
+    label {
+      color: $azul-oscuro !important;
+      font-weight: 600;
+    }
+
+    // Fallback Angular Material < 15 (legacy)
+    .mat-form-field-flex {
+      background-color: $amarillo !important;
+      border-radius: 4px !important;
+    }
+
+    .mat-form-field-outline-start,
+    .mat-form-field-outline-gap,
+    .mat-form-field-outline-end {
+      border-color: $amarillo-oscuro !important;
+    }
+
+    .mat-select-value,
+    .mat-select-value-text {
+      color: white !important;
+      font-weight: 600;
+    }
+
+    .mat-select-arrow {
+      color: white !important;
     }
   }
 }
